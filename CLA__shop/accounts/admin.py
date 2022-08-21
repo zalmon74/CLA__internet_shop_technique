@@ -19,9 +19,12 @@ class AdminCustomUser(UserAdmin):
         ('Права доступа', {'fields': ('is_staff', 'is_active', 'groups', 'user_permissions')}),
         ('Важные даты', {'fields': ('last_login', 'date_joined')}),
     )
-    add_fieldsets = (
-        ('None', {
-            'fields': ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'is_staff')}
-         ),
-    )
     readonly_fields = ('last_login', 'date_joined',)
+    add_fieldsets = (
+        (
+            'Обязательные поля', {
+                'fields': ('username', 'password1', 'password2', 'email', 'first_name', 'last_name')
+            }
+        ),
+        ('Второстепенные поля', {'fields': ('is_staff', )}),
+    )

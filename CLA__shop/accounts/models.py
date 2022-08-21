@@ -23,7 +23,7 @@ class CustomUser(AbstractUser):
             'unique': 'Пользователь с таким логином, уже существует',
         }
     )
-    email = models.EmailField(unique=True, db_index=True, verbose_name='Email пользователя')
+    email = models.EmailField(unique=True, db_index=True, verbose_name='Email')
     first_name = models.CharField(
         max_length=50,
         validators=[validation_first_last_name, ],
