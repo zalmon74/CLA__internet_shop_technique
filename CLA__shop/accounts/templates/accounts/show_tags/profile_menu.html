@@ -1,0 +1,8 @@
+
+<ul style="display: flex; justify-content: space-between; margin: 50px;">
+    {% for el_menu in list_menu %}
+        <li >
+            <a href="{% url el_menu.url_name %}" class="nav-item" style="font-size: 20px">{{ el_menu.name }}</a>
+        </li>
+    {% endfor %}
+</ul>

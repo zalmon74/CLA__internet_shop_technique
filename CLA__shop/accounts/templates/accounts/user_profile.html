@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load accounts_tags %}
+
+{% block title %}CLA | {{ title }}{% endblock title %}
+
+{% block content %}
+
+    {% show_profile_menu %}
+
+    <div class="contact" style="margin: 0px">
+     <div class="container">
+        <div class="row">
+           <div class="col-md-12">
+              <div class="titlepage">
+                 <h2>{{ title }}</h2>
+              </div>
+           </div>
+        </div>
+        <div class="row">
+           <div class="col-md-10 offset-md-1">
+              <form id="request" class="main_form" method="post">
+
+                  {% csrf_token %}
+
+                 <div class="row">
+                     {% for el_form in form %}
+                         <div class="col-md-12 ">
+                            <p style="color: red; font-size: 20px; margin-bottom: 5px;">{{ el_form.errors.0 }}</p>
+                            <p style="color: forestgreen">{{ el_form.label }}</p>
+                            {{ el_form }}
+                        </div>
+                     {% endfor %}
+                    <div class="col-md-12" style="display: flex; justify-content: center">
+                       <button type="submit" class="send_btn">{{ text_button }}</button>
+                       <a href="{% url 'user_change_password' %}" class="send_btn">Изменить пароль</a>
+                    </div>
+
+                    <div class="col-md-12">
+
+                    </div>
+
+                 </div>
+              </form>
+           </div>
+        </div>
+     </div>
+    </div>
+
+
+{% endblock content %}
