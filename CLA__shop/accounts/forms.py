@@ -1,3 +1,5 @@
+
+from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from django import forms
@@ -6,6 +8,9 @@ from .models import CustomUser
 
 
 class CustomUserCreateForm(UserCreationForm):
+    """
+    Форма создания пользователя
+    """
 
     password1 = forms.CharField(
         label='Пароль',
@@ -28,6 +33,9 @@ class CustomUserCreateForm(UserCreationForm):
 
 
 class CustomAuthenticationForm(AuthenticationForm):
+    """
+    Форма аутентификации пользователя
+    """
 
     username = forms.CharField(
         label='Логин',
@@ -40,3 +48,58 @@ class CustomAuthenticationForm(AuthenticationForm):
 
     class Meta:
         model = CustomUser
+
+
+class ProfileUserForm(forms.Form):
+    """
+    Форма для отображения данных о пользователе и изменении его имени и фамилии
+    """
+
+    username = forms.CharField(
+        label='Логин',
+        widget=forms.TextInput(attrs={'class': 'contactus', 'readonly': ''})
+    )
+    email = forms.CharField(
+        label='Email',
+        widget=forms.TextInput(attrs={'class': 'contactus', 'readonly': ''})
+    )
+    first_name = forms.CharField(
+        label='Имя',
+        widget=forms.TextInput(attrs={'class': 'contactus', })
+    )
+    last_name = forms.CharField(
+        label='Фамилия',
+        widget=forms.TextInput(attrs={'class': 'contactus', })
+    )
+
+
+class ChangeUserPasswordForm(forms.Form):
+    """
+    Форма для изменения пароля профиля
+    """
+
+    error_messages = {
+        'password_mismatch': 'Введенные пароли не совпадают',
+    }
+    password1 = forms.CharField(
+        label='Пароль',
+        validators=[validate_password],
+        widget=forms.PasswordInput(attrs={'class': 'contactus', 'placeholder': 'Пароль'})
+    )
+    password2 = forms.CharField(
+        label='Повтор пароля',
+        validators=[validate_password],
+        widget=forms.PasswordInput(attrs={'class': 'contactus', 'placeholder': 'Повтор пароля'})
+    )
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError(
+                self.error_messages['password_mismatch'],
+                code='password_mismatch',
+            )
+        return password2
+
+
