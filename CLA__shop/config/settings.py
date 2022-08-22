@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Contrib
-
+    'captcha',
     # My
     'accounts.apps.AccountsConfig'
 ]
@@ -146,3 +146,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# Captcha
+
+CAPTCHA_LENGTH = 7
+CAPTCHA_FONT_SIZE = 40

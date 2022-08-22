@@ -4,6 +4,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from django import forms
 
+from captcha.fields import CaptchaField, CaptchaTextInput
+
 from .models import CustomUser
 
 
@@ -19,6 +21,15 @@ class CustomUserCreateForm(UserCreationForm):
     password2 = forms.CharField(
         label='Повтор пароля',
         widget=forms.PasswordInput(attrs={'class': 'contactus', 'placeholder': 'Повтор пароля'})
+    )
+
+    captcha = CaptchaField(
+        widget=(
+            CaptchaTextInput(
+                attrs={'class': 'contactus', 'style': 'margin-top: 30px;', 'placeholder': 'Введите текст с картинки'}
+            )
+        ),
+        error_messages={'invalid': 'Введенный текст не соответствует картинке, пожалуйста повторите'},
     )
 
     class Meta:
