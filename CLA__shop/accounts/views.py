@@ -19,6 +19,12 @@ class RegisterUser(CreateView):
     template_name = 'accounts/register_login_user.html'
     form_class = CustomUserCreateForm
 
+    def get(self, request, *args, **kwargs):
+        # Если пользователь уже авторизован, то он не должен видеть данную страницу
+        if self.request.user.is_authenticated:
+            return redirect('user_profile')
+        return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Регистрация'
@@ -43,6 +49,12 @@ class LoginUser(LoginView):
 
     template_name = 'accounts/register_login_user.html'
     form_class = CustomAuthenticationForm
+
+    def get(self, request, *args, **kwargs):
+        # Если пользователь уже авторизован, то он не должен видеть данную страницу
+        if self.request.user.is_authenticated:
+            return redirect('user_profile')
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
