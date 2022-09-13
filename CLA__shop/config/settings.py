@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     # Contrib
     'captcha',
     # My
-    'accounts.apps.AccountsConfig'
+    'accounts.apps.AccountsConfig',
+    'shop_products.apps.ShopProductsConfig',
 ]
 
 MIDDLEWARE = [
