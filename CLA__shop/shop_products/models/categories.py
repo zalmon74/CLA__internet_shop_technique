@@ -3,6 +3,10 @@ from django.db import models
 from shop_products.validators import validate_category_name
 
 
+def upload_to(instance, filename):
+    return 'categories/images/%s/%s' % (instance, filename)
+
+
 class CategoryProduct(models.Model):
     """
     Категория товара
@@ -17,7 +21,7 @@ class CategoryProduct(models.Model):
         help_text='Название категории товара',
     )
     photo = models.ImageField(
-        upload_to=f'categories/images/{name}/',
+        upload_to='test/',
         verbose_name='Фото категории',
         help_text='Картинка, которая отображается на главном экране, при выборе категории',
     )
