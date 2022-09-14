@@ -3,6 +3,10 @@ from django.db import models
 from .categories import CategoryProduct
 
 
+def upload_to(instance, filename):
+    return 'brands/images/%s/%s' % (instance, filename)
+
+
 class BrandProduct(models.Model):
     """
     Бренд (производитель) товара
@@ -16,7 +20,7 @@ class BrandProduct(models.Model):
         help_text='Наименование бренда',
     )
     photo = models.ImageField(
-        upload_to=f'brands/images/{name}/',
+        upload_to=upload_to,
         verbose_name='Логотип бренда',
         help_text='Картинка, которая отображается на главном экране, при выборе бренда',
     )
