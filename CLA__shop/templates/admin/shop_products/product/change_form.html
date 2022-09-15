@@ -1,0 +1,39 @@
+{% extends "admin/change_form.html" %}
+
+{% block content %}
+
+    {{ block.super }}
+
+    {% block my_js %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                //Отслеживаем событие отправки формы
+                $('#id_brand').mouseout(function () {
+                    // Создаем ajax-вызов
+                    $.ajax({
+                        data: $(this).serialize(), // Получаем данные от формы
+                        url: "{% url 'ajax_get_categories_for_brand' %}",
+                        // Если успешно, то
+                        success: function (response) {
+                            if (response.categories) {
+                                // Удаляем все категории
+                                $("#id_category option").each(function () {
+                                    $(this).remove();
+                                });
+                                // Добавляем только необходимые
+                                for (var ind=0; ind < response.categories.length; ind++)
+                                    $("#id_category").append('<option value='+response.categories[ind].pk+'>'+response.categories[ind].name+'</option>')
+                            }
+                        },
+                        // Если ошибка
+                        error: function (response){
+                            console.log(response.responseJSON.errors)
+                        }
+                    });
+                });
+            });
+        </script>
+    {% endblock my_js %}
+
+{% endblock content %}
