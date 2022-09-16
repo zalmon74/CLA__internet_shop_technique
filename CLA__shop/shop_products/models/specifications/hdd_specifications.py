@@ -8,10 +8,15 @@ class FactoryDataHDDSpecifications(models.Model):
     Заводские данные
     """
     warranty = models.IntegerField(verbose_name='Гарантия от производителя')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Заводские данные для товара {self.product} категории "Жесткие диски"'
 
     class Meta:
         verbose_name = 'Заводские данные'
         verbose_name_plural = 'Заводские данные'
+        ordering = ['product', ]
 
 
 class CommonParametersHDDSpecifications(models.Model):
@@ -21,10 +26,15 @@ class CommonParametersHDDSpecifications(models.Model):
     type = models.CharField(max_length=15, default='HDD', verbose_name='Тип')
     model = models.CharField(max_length=50, verbose_name='Модель')
     manufacturer_code = models.CharField(max_length=50, verbose_name='Код производителя')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Общие параметры для товара {self.product} категории "Жесткие диски"'
 
     class Meta:
         verbose_name = 'Общие параметры'
         verbose_name_plural = 'Общие параметры'
+        ordering = ['product', ]
 
 
 class StorageDeviceHDDSpecifications(models.Model):
@@ -43,10 +53,15 @@ class StorageDeviceHDDSpecifications(models.Model):
         help_text='ГБит/с'
     )
     optimization_raid_arrays = models.BooleanField(default=False, verbose_name='Возможность оптимизации под RAID-масс.')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Накопитель для товара {self.product} категории "Жесткие диски"'
 
     class Meta:
         verbose_name = 'Накопитель'
         verbose_name_plural = 'Накопитель'
+        ordering = ['product', ]
 
 
 class MechanicsReliabilityHDDSpecifications(models.Model):
@@ -56,10 +71,15 @@ class MechanicsReliabilityHDDSpecifications(models.Model):
     recording_technology = models.CharField(max_length=10, default='CMR', verbose_name='Технология записи')
     shock_resistance_wort = models.IntegerField(verbose_name='Ударность при падении', help_text='G')
     with_helium_filling = models.BooleanField(default=False, verbose_name='С гелиевым наполнением')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Механика и надежность для товара {self.product} категории "Жесткие диски"'
 
     class Meta:
         verbose_name = 'Механика и надежность'
         verbose_name_plural = 'Механика и надежность'
+        ordering = ['product', ]
 
 
 class DimensionsHDDSpecifications(models.Model):
@@ -70,50 +90,16 @@ class DimensionsHDDSpecifications(models.Model):
     width = models.IntegerField(verbose_name='Ширина', help_text='мм.')
     height = models.IntegerField(verbose_name='Высота', help_text='мм.')
     weight = models.IntegerField(verbose_name='Вес', help_text='г.')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Габариты и вес для товара {self.product} категории "Жесткие диски"'
 
     class Meta:
         verbose_name = 'Габариты, вес'
         verbose_name_plural = 'Габариты, вес'
-
-
-class HDDSpecifications(models.Model):
-    """
-    Расширенные характеристики для HDD
-    """
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
-    factory_data = models.ForeignKey(
-        FactoryDataHDDSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Заводские данные',
-        related_name='+',
-    )
-    common_data = models.ForeignKey(
-        CommonParametersHDDSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Общие данные',
-    )
-    storage_device = models.ForeignKey(
-        StorageDeviceHDDSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Накопитель',
-    )
-    mechanics_reliability = models.ForeignKey(
-        MechanicsReliabilityHDDSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Механика и надежность',
-    )
-    dimensions = models.ForeignKey(
-        DimensionsHDDSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Габариты, вес',
-    )
-
-    def __str__(self):
-        return f'Расширенные характеристики для HDD {self.product}'
-
-    class Meta:
-        verbose_name = 'Расширенные характеристики для HDD'
-        verbose_name_plural = 'Расширенные характеристики для HDD'
         ordering = ['product', ]
+
+
 
 

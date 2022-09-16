@@ -44,13 +44,3 @@ class BrandProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Product)
 
-
-admin.site.register(ComputerCaseSpecifications)
-admin.site.register(CoolerSpecifications)
-admin.site.register(HDDSpecifications)
-admin.site.register(MotherboardSpecifications)
-admin.site.register(PowerSupplySpecifications)
-admin.site.register(ProcessorSpecifications)
-admin.site.register(RamSpecifications)
-admin.site.register(SolidStateDriveSpecifications)
-admin.site.register(VideoCartSpecifications)

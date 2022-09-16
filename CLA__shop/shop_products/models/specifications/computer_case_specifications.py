@@ -8,10 +8,15 @@ class FactoryDataComputerCaseSpecifications(models.Model):
     Заводские данные
     """
     warranty = models.IntegerField(verbose_name='Гарантия от производителя')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Заводские данные для продукта {self.product} категории "Корпуса"'
 
     class Meta:
         verbose_name = 'Заводские данные'
         verbose_name_plural = 'Заводские данные'
+        ordering = ['product', ]
 
 
 class CommonParametersComputerCaseSpecifications(models.Model):
@@ -21,10 +26,15 @@ class CommonParametersComputerCaseSpecifications(models.Model):
     type = models.CharField(max_length=25, default='Корпус', verbose_name='Тип')
     model = models.CharField(max_length=25, verbose_name='Модель')
     manufacturer_code = models.CharField(max_length=25, verbose_name='Код производителя')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Общие параметры для продукта {self.product} категории "Корпуса"'
 
     class Meta:
         verbose_name = 'Общие параметры'
         verbose_name_plural = 'Общие параметры'
+        ordering = ['product', ]
 
 
 class FormFactorComputerCaseSpecifications(models.Model):
@@ -49,10 +59,15 @@ class FormFactorComputerCaseSpecifications(models.Model):
     width = models.IntegerField(verbose_name='Ширина', help_text='мм.')
     height = models.IntegerField(verbose_name='Высота', help_text='мм.')
     weight = models.IntegerField(verbose_name='Вес', help_text='г.')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Форм-фактор и габариты для продукта {self.product} категории "Корпуса"'
 
     class Meta:
         verbose_name = 'Форм-фактор и габариты'
         verbose_name_plural = 'Форм-фактор и габариты'
+        ordering = ['product', ]
 
 
 class AppearanceComputerCaseSpecifications(models.Model):
@@ -83,10 +98,15 @@ class AppearanceComputerCaseSpecifications(models.Model):
     )
     backlight_color = models.CharField(max_length=25, verbose_name='Цвет подсветки')
     backlight_source = models.CharField(max_length=10, verbose_name='Источник подсветки')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Внешний вид для продукта {self.product} категории "Корпуса"'
 
     class Meta:
         verbose_name = 'Внешний вид'
         verbose_name_plural = 'Внешний вид'
+        ordering = ['product', ]
 
 
 class CompatibilityComputerCaseSpecifications(models.Model):
@@ -125,10 +145,15 @@ class CompatibilityComputerCaseSpecifications(models.Model):
     number_internal_3_5_bays = models.IntegerField(verbose_name='Количество внутренних отсеков 3.5\" ', help_text='шт')
     number_external_3_5_bays = models.IntegerField(verbose_name='Количество внешних отсеков 3.5\" ', help_text='шт')
     number_bays_5_25 = models.IntegerField(verbose_name='Число отсеков 5.25\"', help_text='шт')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Совместимость для продукта {self.product} категории "Корпуса"'
 
     class Meta:
         verbose_name = 'Совместимость'
         verbose_name_plural = 'Совместимость'
+        ordering = ['product', ]
 
 
 class CoolingComputerCaseSpecifications(models.Model):
@@ -153,10 +178,15 @@ class CoolingComputerCaseSpecifications(models.Model):
         max_length=25,
         verbose_name='Боковой монтажный размер радиатора СВО'
     )
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Охлаждение данные для продукта {self.product} категории "Корпуса"'
 
     class Meta:
         verbose_name = 'Охлаждение'
         verbose_name_plural = 'Охлаждение'
+        ordering = ['product', ]
 
 
 class FrontPanelConnectorsComputerCaseSpecifications(models.Model):
@@ -166,10 +196,15 @@ class FrontPanelConnectorsComputerCaseSpecifications(models.Model):
     io_panel_layout = models.CharField(max_length=7, default='Спереди', verbose_name='Расположение I/O панели')
     connectors = models.CharField(max_length=100, verbose_name='Разъемы')
     built_card_reader = models.BooleanField(default=False, verbose_name='Наличие кард-ридера')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Разъемы и интерфейсы лицевой панели для продукта {self.product} категории "Корпуса"'
 
     class Meta:
         verbose_name = 'Разъемы и интерфейсы лицевой панели'
         verbose_name_plural = 'Разъемы и интерфейсы лицевой панели'
+        ordering = ['product', ]
 
 
 class ServiceComputerCaseSpecifications(models.Model):
@@ -180,71 +215,14 @@ class ServiceComputerCaseSpecifications(models.Model):
     cutout_area_mounting_cpu_cooler = models.BooleanField(default=False, verbose_name='Вырез в районе крепления кулера')
     rear_cable_routing = models.BooleanField(default=False, verbose_name='Прокладка кабелей за задней стенкой')
     dust_filter = models.BooleanField(default=False, verbose_name='Пылевой фильтр')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Обслуживание для продукта {self.product} категории "Корпуса"'
 
     class Meta:
         verbose_name = 'Обслуживание'
         verbose_name_plural = 'Обслуживание'
-
-
-class ComputerCaseSpecifications(models.Model):
-    """
-    Расширенные характеристики для корпуса
-    """
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
-    factory_data = models.ForeignKey(
-        FactoryDataComputerCaseSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Заводские данные',
-        related_name='+',
-    )
-    common_data = models.ForeignKey(
-        CommonParametersComputerCaseSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Общие данные',
-    )
-    form_factor = models.ForeignKey(
-        FormFactorComputerCaseSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Форм-фактор и габариты',
-    )
-    appearance = models.ForeignKey(
-        AppearanceComputerCaseSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Внешний вид',
-    )
-    compatibility = models.ForeignKey(
-        CompatibilityComputerCaseSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Совместимость',
-    )
-    cooling = models.ForeignKey(
-        CoolingComputerCaseSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Охлаждение',
-    )
-    front_panel_connector = models.ForeignKey(
-        FrontPanelConnectorsComputerCaseSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Разъемы и интерфейсы лицевой панели',
-    )
-    service = models.ForeignKey(
-        ServiceComputerCaseSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Обслуживание',
-    )
-
-    def __str__(self):
-        return f'Расширенные характеристики для корпуса {self.product}'
-
-    class Meta:
-        verbose_name = 'Расширенные характеристики для корпуса'
-        verbose_name_plural = 'Расширенные характеристики для корпуса'
         ordering = ['product', ]
-
-
-
-
-
-
 
 

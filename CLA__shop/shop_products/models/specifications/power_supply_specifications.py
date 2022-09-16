@@ -8,10 +8,15 @@ class FactoryDataPowerSupplySpecifications(models.Model):
     Заводские данные
     """
     warranty = models.IntegerField(verbose_name='Гарантия от производителя')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Заводские данные для товара {self.product} категории "Блок питания"'
 
     class Meta:
         verbose_name = 'Заводские данные'
         verbose_name_plural = 'Заводские данные'
+        ordering = ['product', ]
 
 
 class CommonParametersPowerSupplySpecifications(models.Model):
@@ -22,10 +27,15 @@ class CommonParametersPowerSupplySpecifications(models.Model):
     model = models.CharField(max_length=50, verbose_name='Модель')
     manufacturer_code = models.CharField(max_length=50, verbose_name='Код производителя')
     power = models.IntegerField(verbose_name='Мощность', help_text='Вт')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Общие параметры для товара {self.product} категории "Блок питания"'
 
     class Meta:
         verbose_name = 'Общие параметры'
         verbose_name_plural = 'Общие параметры'
+        ordering = ['product', ]
 
 
 class AppearancePowerSupplySpecifications(models.Model):
@@ -48,10 +58,15 @@ class AppearancePowerSupplySpecifications(models.Model):
     wire_braid = models.BooleanField(default=False, verbose_name='Наличие оплетки проводов')
     backlight_type = models.BooleanField(default=False, verbose_name='Тип подсветки')
     wire_colors = models.CharField(max_length=25, verbose_name='Цвет проводов')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Внешний вид для товара {self.product} категории "Блок питания"'
 
     class Meta:
         verbose_name = 'Внешний вид'
         verbose_name_plural = 'Внешний вид'
+        ordering = ['product', ]
 
 
 class CablesConnectorsPowerSupplySpecifications(models.Model):
@@ -64,10 +79,15 @@ class CablesConnectorsPowerSupplySpecifications(models.Model):
     number_connectors_15pin_sata = models.IntegerField(verbose_name='Количество разъемов 15-pin SATA')
     number_4pin_molex = models.IntegerField(verbose_name='Количество разъемов 4-pin Molex')
     connector_4pin_floppy = models.BooleanField(default=False, verbose_name='Наличие кабеля питания для дисковода')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Кабели и разъемы для товара {self.product} категории "Блок питания"'
 
     class Meta:
         verbose_name = 'Кабели и разъемы'
         verbose_name_plural = 'Кабели и разъемы'
+        ordering = ['product', ]
 
 
 class ElectricalParametersPowerSupplySpecifications(models.Model):
@@ -110,10 +130,15 @@ class ElectricalParametersPowerSupplySpecifications(models.Model):
         verbose_name='Диапазон входного напряжения сети',
         help_text='Вт',
     )
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Электрические параметры для товара {self.product} категории "Блок питания"'
 
     class Meta:
         verbose_name = 'Электрические параметры'
         verbose_name_plural = 'Электрические параметры'
+        ordering = ['product', ]
 
 
 class CoolingSystemPowerSupplySpecifications(models.Model):
@@ -123,10 +148,15 @@ class CoolingSystemPowerSupplySpecifications(models.Model):
     cooling_system = models.CharField(max_length=25, verbose_name='Система охлаждения')
     fan_dimensions = models.CharField(max_length=25, verbose_name='Размеры вентиляторов')
     speed_control = models.CharField(max_length=25, verbose_name='Регулировка оборотов вентиляторов')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Система охлаждения для товара {self.product} категории "Блок питания"'
 
     class Meta:
         verbose_name = 'Система охлаждения'
         verbose_name_plural = 'Система охлаждения'
+        ordering = ['product', ]
 
 
 class CertificationPowerSupplySpecifications(models.Model):
@@ -152,10 +182,15 @@ class CertificationPowerSupplySpecifications(models.Model):
     )
     pfc = models.CharField(max_length=25, verbose_name='Корректор коэффициента мощности')
     protection_technologies = models.CharField(max_length=25, verbose_name='Технологии защиты')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Сертификация для товара {self.product} категории "Блок питания"'
 
     class Meta:
         verbose_name = 'Сертификация'
         verbose_name_plural = 'Сертификация'
+        ordering = ['product', ]
 
 
 class DimensionsWeightPowerSupplySpecifications(models.Model):
@@ -166,80 +201,12 @@ class DimensionsWeightPowerSupplySpecifications(models.Model):
     width = models.IntegerField(verbose_name='Ширина', help_text='мм.')
     height = models.IntegerField(verbose_name='Высота', help_text='мм.')
     weight = models.IntegerField(verbose_name='Вес', help_text='г.')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Габариты и вес для товара {self.product} категории "Блок питания"'
 
     class Meta:
         verbose_name = 'Габариты и вес'
         verbose_name_plural = 'Габариты и вес'
-
-
-class PowerSupplySpecifications(models.Model):
-    """
-    Расширенные характеристики для блоков питания
-    """
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
-    factory_data = models.ForeignKey(
-        FactoryDataPowerSupplySpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Заводские данные',
-    )
-    common_parameters = models.ForeignKey(
-        CommonParametersPowerSupplySpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Общие данные',
-    )
-    appearance = models.ForeignKey(
-        AppearancePowerSupplySpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Внешний вид',
-    )
-    cables_connectors = models.ForeignKey(
-        CablesConnectorsPowerSupplySpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Кабели и разъемы',
-    )
-    electrical_parameters = models.ForeignKey(
-        ElectricalParametersPowerSupplySpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Электрические параметры',
-    )
-    cooling_system = models.ForeignKey(
-        CoolingSystemPowerSupplySpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Система охлаждения',
-    )
-    certifications = models.ForeignKey(
-        CertificationPowerSupplySpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Сертификация',
-    )
-    dimensions_weight = models.ForeignKey(
-        ElectricalParametersPowerSupplySpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Габариты и вес',
-        related_name='+',
-    )
-
-    def __str__(self):
-        return f'Расширенные характеристики блока питания {self.product}'
-
-    class Meta:
-        verbose_name = 'Расширенные характеристики для блоков питания'
-        verbose_name_plural = 'Расширенные характеристики для блоков питания'
         ordering = ['product', ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -8,10 +8,15 @@ class FactoryDataCoolerSpecifications(models.Model):
     Заводские данные
     """
     warranty = models.IntegerField(verbose_name='Гарантия от производителя')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Заводские данные для товара {self.product} категории "Кулер"'
 
     class Meta:
         verbose_name = 'Заводские данные'
         verbose_name_plural = 'Заводские данные'
+        ordering = ['product', ]
 
 
 class CommonParametersCoolerSpecifications(models.Model):
@@ -23,10 +28,15 @@ class CommonParametersCoolerSpecifications(models.Model):
     socket = models.CharField(max_length=100, verbose_name='Сокет')
     power_dissipation = models.IntegerField(verbose_name='Рассеиваемая мощность', help_text='Вт')
     construction_type = models.CharField(max_length=25, verbose_name='Тип конструкции')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Общие данные для товара {self.product} категории "Кулер"'
 
     class Meta:
         verbose_name = 'Общие данные'
         verbose_name_plural = 'Общие данные'
+        ordering = ['product', ]
 
 
 class RadiatorCoolerSpecifications(models.Model):
@@ -39,10 +49,15 @@ class RadiatorCoolerSpecifications(models.Model):
     heat_pipe_diameter = models.IntegerField(verbose_name='Диаметр тепловых трубок', help_text='мм.')
     nickel_plated = models.CharField(max_length=50, verbose_name='Никелированное покрытие')
     radiator_color = models.CharField(max_length=25, verbose_name='Цвет радиатора')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Радиатор для товара {self.product} категории "Кулер"'
 
     class Meta:
         verbose_name = 'Радиатор'
         verbose_name_plural = 'Радиатор'
+        ordering = ['product', ]
 
 
 class FanCoolerSpecifications(models.Model):
@@ -91,10 +106,15 @@ class FanCoolerSpecifications(models.Model):
         help_text='В',
     )
     bearing_type = models.CharField(max_length=50, verbose_name='Тип подшипника')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Вентилятор для товара {self.product} категории "Кулер"'
 
     class Meta:
         verbose_name = 'Вентилятор'
         verbose_name_plural = 'Вентилятор'
+        ordering = ['product', ]
 
 
 class DimensionsCoolerSpecifications(models.Model):
@@ -105,51 +125,17 @@ class DimensionsCoolerSpecifications(models.Model):
     width = models.IntegerField(verbose_name='Ширина', help_text='мм.')
     height = models.IntegerField(verbose_name='Высота', help_text='мм.')
     weight = models.IntegerField(verbose_name='Вес', help_text='г.')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
+
+    def __str__(self):
+        return f'Габариты данные для товара {self.product} категории "Кулер"'
 
     class Meta:
         verbose_name = 'Габариты'
         verbose_name_plural = 'Габариты'
-
-
-class CoolerSpecifications(models.Model):
-    """
-    Расширенные характеристики для кулера
-    """
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
-    factory_data = models.ForeignKey(
-        FactoryDataCoolerSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Заводские данные',
-        related_name='+',
-    )
-    common_parameters = models.ForeignKey(
-        CommonParametersCoolerSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Общие данные',
-    )
-    radiator = models.ForeignKey(
-        RadiatorCoolerSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Радиатор',
-    )
-    fan = models.ForeignKey(
-        FanCoolerSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Вентилятор',
-    )
-    dimensions = models.ForeignKey(
-        FactoryDataCoolerSpecifications,
-        on_delete=models.CASCADE,
-        verbose_name='Габариты',
-    )
-
-    def __str__(self):
-        return f'Расширенные характеристики для кулера {self.product}'
-
-    class Meta:
-        verbose_name = 'Расширенные характеристики для кулера'
-        verbose_name_plural = 'Расширенные характеристики для кулера'
         ordering = ['product', ]
+
+
 
 
 
