@@ -25,7 +25,7 @@ class Product(models.Model):
         verbose_name='Количество',
         help_text='Количество товаров на складе (сколько можно продать товаров)',
     )
-    brand = models.OneToOneField(
+    brand = models.ForeignKey(
         BrandProduct,
         on_delete=models.CASCADE,
         db_index=True,
