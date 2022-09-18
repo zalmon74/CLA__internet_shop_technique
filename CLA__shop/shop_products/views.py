@@ -1,10 +1,10 @@
 from django.core.cache import cache
 
-from django.views.decorators.cache import cache_page
-
 from django.http import JsonResponse
 
 from shop_products.models import BrandProduct
+
+from .business_logic import *
 
 
 def ajax_get_categories_for_current_brand(request):
@@ -24,6 +24,10 @@ def ajax_get_categories_for_current_brand(request):
                 output_dict['categories'].append(
                     {'pk': category.pk, 'name': category.name}
                 )
+            # Формируем словарь, который сопоставляет категории и id-элементов. Чтобы отображать необходимые формы
+            # при добавлении элемента
+            dict_match_cat_spec = create_dict_match_category_and_specification()
+            output_dict['dict_match_cat_spec'] = dict_match_cat_spec
             # Добавляем в кэш
             cache.set('brand_' + str(brand), output_dict, 60)
     else:

@@ -7,7 +7,7 @@ class FactoryDataRamSpecifications(models.Model):
     """
     Заводские данные
     """
-    warranty = models.IntegerField(verbose_name='Страна-производитель')
+    warranty = models.IntegerField(verbose_name='Гарантия от производителя')
     product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
 
     def __str__(self):

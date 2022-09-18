@@ -7,9 +7,26 @@
     {% block my_js %}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
+
+            // Функция
+            (function( $ ){
+               $.fn.visible_form_for_current_category = function(dict_match_cat_spec) {
+                   // Определяем выбранную категорию, после чего отображаем необходимые поля
+                   // Получаем текущую выбранную категорию и отображаем необходимые
+                   let curr_category = $('#id_category').val();
+                   let id_array = dict_match_cat_spec[curr_category];
+                   console.log(dict_match_cat_spec)
+                   for(var ind=0; ind < id_array.length; ind++)
+                       $('#'+id_array[ind]).show()
+               };
+            })( jQuery );
+
             $(document).ready(function() {
-                //Отслеживаем событие отправки формы
-                $('#id_brand').mouseout(function () {
+                let dict_match_cat_spec = 0;
+                // Отключаем все дополнительные поля, которые зависят от категории
+                $('.js-inline-admin-formset.inline-group').not('#photoproduct_set-group').hide()
+                //Отслеживаем событие выбора бренда
+                    $('#id_brand').click(function () {
                     // Создаем ajax-вызов
                     $.ajax({
                         data: $(this).serialize(), // Получаем данные от формы
@@ -17,13 +34,18 @@
                         // Если успешно, то
                         success: function (response) {
                             if (response.categories) {
+                                // Отключаем все дополнительные поля, которые зависят от категории
+                                $('.js-inline-admin-formset.inline-group').not('#photoproduct_set-group').hide()
                                 // Удаляем все категории
-                                $("#id_category option").each(function () {
+                                $('#id_category option').each(function () {
                                     $(this).remove();
                                 });
                                 // Добавляем только необходимые
-                                for (var ind=0; ind < response.categories.length; ind++)
-                                    $("#id_category").append('<option value='+response.categories[ind].pk+'>'+response.categories[ind].name+'</option>')
+                                for (let ind=0; ind < response.categories.length; ind++)
+                                    $('#id_category').append('<option value='+response.categories[ind].pk+'>'+response.categories[ind].name+'</option>')
+                                // Отображаем необходимые формы
+                                dict_match_cat_spec = response.dict_match_cat_spec
+                                $(this).visible_form_for_current_category(dict_match_cat_spec)
                             }
                         },
                         // Если ошибка
@@ -31,6 +53,13 @@
                             console.log(response.responseJSON.errors)
                         }
                     });
+                });
+                // Отслеживаем событие: выбор категории
+                $('#id_category').click(function () {
+                    // Отключаем все дополнительные поля, которые зависят от категории
+                    $('.js-inline-admin-formset.inline-group').not('#photoproduct_set-group').hide()
+                    // Отображаем необходимые меню
+                    $(this).visible_form_for_current_category(dict_match_cat_spec)
                 });
             });
         </script>
