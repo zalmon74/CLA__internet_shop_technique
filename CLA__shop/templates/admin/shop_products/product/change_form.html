@@ -8,44 +8,29 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
 
-            // Функция
+            // Функция отображения форм для определенной категориии
             (function( $ ){
-               $.fn.visible_form_for_current_category = function(dict_match_cat_spec) {
+               $.fn.visible_form_for_current_category = function(curr_category, dict_match_cat_spec) {
                    // Определяем выбранную категорию, после чего отображаем необходимые поля
                    // Получаем текущую выбранную категорию и отображаем необходимые
-                   let curr_category = $('#id_category').val();
                    let id_array = dict_match_cat_spec[curr_category];
-                   console.log(dict_match_cat_spec)
-                   for(var ind=0; ind < id_array.length; ind++)
-                       $('#'+id_array[ind]).show()
+                   for(let ind=0; ind < id_array.length; ind++)
+                       $('#' + id_array[ind]).show()
                };
             })( jQuery );
 
-            $(document).ready(function() {
-                let dict_match_cat_spec = 0;
-                // Отключаем все дополнительные поля, которые зависят от категории
-                $('.js-inline-admin-formset.inline-group').not('#photoproduct_set-group').hide()
-                //Отслеживаем событие выбора бренда
-                    $('#id_brand').click(function () {
-                    // Создаем ajax-вызов
-                    $.ajax({
-                        data: $(this).serialize(), // Получаем данные от формы
+            // Функция отправки ajax-запроса на получения списка категорий для выбранного бренда
+            (function( $ ){
+               $.fn.ajax_get_categories_for_brand = function() {
+                   let categories = {}
+                   $.ajax({
+                        data: $('#id_brand').serialize(), // Получаем данные от формы
                         url: "{% url 'ajax_get_categories_for_brand' %}",
+                       async: false,
                         // Если успешно, то
                         success: function (response) {
                             if (response.categories) {
-                                // Отключаем все дополнительные поля, которые зависят от категории
-                                $('.js-inline-admin-formset.inline-group').not('#photoproduct_set-group').hide()
-                                // Удаляем все категории
-                                $('#id_category option').each(function () {
-                                    $(this).remove();
-                                });
-                                // Добавляем только необходимые
-                                for (let ind=0; ind < response.categories.length; ind++)
-                                    $('#id_category').append('<option value='+response.categories[ind].pk+'>'+response.categories[ind].name+'</option>')
-                                // Отображаем необходимые формы
-                                dict_match_cat_spec = response.dict_match_cat_spec
-                                $(this).visible_form_for_current_category(dict_match_cat_spec)
+                                categories = response.categories
                             }
                         },
                         // Если ошибка
@@ -53,13 +38,75 @@
                             console.log(response.responseJSON.errors)
                         }
                     });
+                   // Отключаем все дополнительные поля, которые зависят от категории
+                    $('.js-inline-admin-formset.inline-group').not('#photoproduct_set-group').hide()
+                    // Добавляем только необходимые категории
+                    for (let ind=0; ind < categories.length; ind++)
+                        $('#id_category').append('<option value='+categories[ind].pk+'>'+categories[ind].name+'</option>')
+               };
+            })( jQuery );
+
+            // Функция отправки ajax-запроса для получения словаря с сопоставлением категории и id-элементов на странице
+            // с расширенными параметрами для товара
+            (function( $ ){
+               $.fn.ajax_get_el_specifications = function() {
+                   let output_dict = {}
+                   $.ajax({
+                        url: "{% url 'ajax_get_el_specifications' %}",
+                        async: false,
+                        // Если успешно, то
+                        success: function (response) {
+                            output_dict = response.dict_match_cat_spec
+                        },
+                        // Если ошибка
+                        error: function (response){
+                            console.log(response.responseJSON.errors)
+                        }
+                    })
+                   return output_dict
+               };
+            })( jQuery );
+
+            $(document).ready(function() {
+                // Отключаем все дополнительные поля, которые зависят от категории
+                $('.js-inline-admin-formset.inline-group').not('#photoproduct_set-group').hide()
+                let dict_match_cat_spec = $(this).ajax_get_el_specifications();
+                // Текущая категория
+                let curr_category = $('#id_category option')[1].value
+                // Отображаем дополнительные поля, если уже выбрана категория
+                if (($('#id_name').val().length !== 0) && ($('#id_category').val() !== ''))
+                {
+                    if ($('#id_category').val() !== '')
+                        curr_category = $('#id_category').val()
+                    $(this).visible_form_for_current_category(curr_category, dict_match_cat_spec);
+                }
+                //Отслеживаем событие выбора бренда
+                $('#id_brand').change('#id_brand', function () {
+                    // Удаляем все категории
+                    document.getElementById("id_category").options.length = 0;
+                    // Создаем ajax-вызов для получения категорий для выбранного бренда
+                    $(this).ajax_get_categories_for_brand();
+                    // Создаем ajax-вызов для получения словаря для сопоставления категории id-элементов на странице
+                    // для расширенных характеристик товара
+                    if (Object.keys(dict_match_cat_spec).length === 0)
+                        dict_match_cat_spec = $(this).ajax_get_el_specifications();
+                    if ($('#id_category').val() !== '')
+                        curr_category = $('#id_category').val()
+                    $(this).visible_form_for_current_category(curr_category, dict_match_cat_spec)
                 });
                 // Отслеживаем событие: выбор категории
-                $('#id_category').click(function () {
+                $('#id_category').change(function () {
                     // Отключаем все дополнительные поля, которые зависят от категории
                     $('.js-inline-admin-formset.inline-group').not('#photoproduct_set-group').hide()
+                    // Создаем ajax-вызов для получения словаря для сопоставления категории id-элементов на странице
+                    // для расширенных характеристик товара
+                    if (Object.keys(dict_match_cat_spec).length === 0) {
+                        dict_match_cat_spec = $(this).ajax_get_el_specifications();
+                    }
+                    if ($('#id_category').val() !== '')
+                        curr_category = $('#id_category').val()
                     // Отображаем необходимые меню
-                    $(this).visible_form_for_current_category(dict_match_cat_spec)
+                    $(this).visible_form_for_current_category(curr_category, dict_match_cat_spec)
                 });
             });
         </script>
