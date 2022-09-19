@@ -11,7 +11,7 @@ class FactoryDataHDDSpecifications(models.Model):
     product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
 
     def __str__(self):
-        return f'Заводские данные для товара {self.product} категории "Жесткие диски"'
+        return f'Заводские данные для товара {self.product} категории "Жесткий диск"'
 
     class Meta:
         verbose_name = 'Заводские данные'
@@ -29,7 +29,7 @@ class CommonParametersHDDSpecifications(models.Model):
     product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
 
     def __str__(self):
-        return f'Общие параметры для товара {self.product} категории "Жесткие диски"'
+        return f'Общие параметры для товара {self.product} категории "Жесткий диск"'
 
     class Meta:
         verbose_name = 'Общие параметры'
@@ -56,7 +56,7 @@ class StorageDeviceHDDSpecifications(models.Model):
     product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
 
     def __str__(self):
-        return f'Накопитель для товара {self.product} категории "Жесткие диски"'
+        return f'Накопитель для товара {self.product} категории "Жесткий диск"'
 
     class Meta:
         verbose_name = 'Накопитель'
@@ -74,7 +74,7 @@ class MechanicsReliabilityHDDSpecifications(models.Model):
     product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
 
     def __str__(self):
-        return f'Механика и надежность для товара {self.product} категории "Жесткие диски"'
+        return f'Механика и надежность для товара {self.product} категории "Жесткий диск"'
 
     class Meta:
         verbose_name = 'Механика и надежность'
@@ -93,7 +93,7 @@ class DimensionsHDDSpecifications(models.Model):
     product = models.OneToOneField(Product, on_delete=models.CASCADE, db_index=True, verbose_name='Товар')
 
     def __str__(self):
-        return f'Габариты и вес для товара {self.product} категории "Жесткие диски"'
+        return f'Габариты и вес для товара {self.product} категории "Жесткий диск"'
 
     class Meta:
         verbose_name = 'Габариты, вес'

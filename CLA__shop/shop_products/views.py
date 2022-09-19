@@ -13,7 +13,6 @@ def ajax_get_categories_for_current_brand(request):
     """
     # Вытаскиваем из БД или кэша выбранный бренд, чтобы определить доступные категории
     brand = request.GET.get('brand')
-    print(request.GET)
     if brand != '':  # Если бренд не выбран, то отправляем пустой словарь
         # output_dict = None
         output_dict = cache.get('brand_' + str(brand))
