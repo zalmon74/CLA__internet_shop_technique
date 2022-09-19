@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     # Contrib
     'captcha',
     'debug_toolbar',  # FIXME: Debug
+    'admin_numeric_filter',
     # My
     'accounts.apps.AccountsConfig',
     'shop_products.apps.ShopProductsConfig',
@@ -157,6 +158,8 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 MEDIA_URL = '.media/'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
 # Cache
 

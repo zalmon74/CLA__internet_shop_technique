@@ -2,6 +2,8 @@ from django.contrib import admin
 
 from django.utils.safestring import mark_safe
 
+from admin_numeric_filter.admin import RangeNumericFilter, NumericFilterModelAdmin
+
 from .models import *
 
 
@@ -475,7 +477,24 @@ class DimensionsAndWightVideoCartSpecificationsInline(admin.StackedInline):
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(NumericFilterModelAdmin):
+
+    def get_html_photo(self, object_):
+        if object_.photoproduct_set.first:
+            return mark_safe(f'<img src="{object_.photoproduct_set.first().photo.url}" width=100>')
+
+    list_display = ('id', 'name', 'get_html_photo', 'price', 'count', 'brand', 'category', 'show')
+    list_display_links = ('name', 'get_html_photo')
+
+    readonly_fields = ('id', 'get_html_photo', )
+
+    search_fields = ('name', 'category', 'brand', )
+    list_filter = (('price', RangeNumericFilter), ('count', RangeNumericFilter), 'category', 'brand', )
+
+    list_editable = ('show', )
+
+    get_html_photo.short_description = 'Фото'
+
     inlines = [
         ProductPhotoInline,
         # Категория "Корпус"
