@@ -18,6 +18,7 @@ from shop_products.models import CategoryProduct
 computer_case = 'Корпус'
 cooler = 'Кулер'
 hdd = 'Жесткий диск'
+mother_board = 'Материнская палата'
 power_supply = 'Блок питания'
 processor = 'Процессор'
 ram = 'Оперативная память'
@@ -28,6 +29,7 @@ video_card = 'Видеокарта'
 computer_case_file = 'computer_case.jpeg'
 cooler_file = 'cooler.jpeg'
 hdd_file = 'hdd.jpeg'
+mother_board_file = 'mother_board.jpeg'
 power_supply_file = 'power_supply.jpeg'
 processor_file = 'processor.jpeg'
 ram_file = 'ram.jpeg'
@@ -38,6 +40,7 @@ all_categories = [
     (computer_case, computer_case_file),
     (cooler, cooler_file),
     (hdd, hdd_file),
+    (mother_board, mother_board_file),
     (power_supply, power_supply_file),
     (processor, processor_file),
     (ram, ram_file),

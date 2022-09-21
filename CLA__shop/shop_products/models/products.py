@@ -55,6 +55,10 @@ class Product(models.Model):
         return self.name
 
 
+def upload_to(instance, filename):
+    return 'products/images/%s/%s' % (instance.product.name, filename)
+
+
 class PhotoProduct(models.Model):
     """
     Фото товаров
@@ -62,6 +66,6 @@ class PhotoProduct(models.Model):
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     photo = models.ImageField(
-        upload_to=f'products/{product}/images/',
+        upload_to=upload_to,
         verbose_name='Фотографии товара',
     )

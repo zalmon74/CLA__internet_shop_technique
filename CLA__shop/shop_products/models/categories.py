@@ -21,7 +21,7 @@ class CategoryProduct(models.Model):
         help_text='Название категории товара',
     )
     photo = models.ImageField(
-        upload_to='test/',
+        upload_to=upload_to,
         verbose_name='Фото категории',
         help_text='Картинка, которая отображается на главном экране, при выборе категории',
     )
