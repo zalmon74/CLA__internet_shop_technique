@@ -7,6 +7,8 @@ from django.db import models
 from .managers import CustomUserManager
 from .validators import *
 
+from shop_products.models import Product, BrandProduct
+
 
 class CustomUser(AbstractUser):
     """
@@ -36,6 +38,8 @@ class CustomUser(AbstractUser):
         verbose_name='Фамилия',
         help_text='Фамилия пользователя может иметь максимум 50 символов и содержать только русские буквы'
     )
+    favorite_products = models.ManyToManyField(Product, verbose_name='Любимые товары')
+    favorite_brands = models.ManyToManyField(BrandProduct, verbose_name='Любимые производители (бренды)')
 
     USERNAME_FIELD = 'username'
 
