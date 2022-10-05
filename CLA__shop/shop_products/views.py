@@ -1,5 +1,7 @@
 from django.core.cache import cache
 
+from django.views.generic import TemplateView
+
 from django.http import JsonResponse
 
 from shop_products.models import BrandProduct
@@ -42,3 +44,7 @@ def ajax_get_categories_with_id_elements_specifications(request):
         dict_match_cat_spec = create_dict_match_category_and_specification()
         cache.set('dict_match_cat_spec', dict_match_cat_spec, 60)
     return JsonResponse({'dict_match_cat_spec': dict_match_cat_spec})
+
+
+class IndexView(TemplateView):
+    template_name = 'base.html'

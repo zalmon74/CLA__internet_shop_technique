@@ -18,11 +18,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from shop_products.views import IndexView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('captcha/', include('captcha.urls')),
     path('accounts/', include('accounts.urls')),
     path('products/', include('shop_products.urls')),
+    path('', IndexView.as_view(), name='home'),
 ]
 
 if settings.DEBUG:
