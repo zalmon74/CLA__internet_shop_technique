@@ -26,15 +26,15 @@ ssd = 'ССД'
 video_card = 'Видеокарта'
 
 # Имена фотографий каждой категории
-computer_case_file = 'computer_case.jpeg'
-cooler_file = 'cooler.jpeg'
-hdd_file = 'hdd.jpeg'
-mother_board_file = 'mother_board.jpeg'
-power_supply_file = 'power_supply.jpeg'
-processor_file = 'processor.jpeg'
-ram_file = 'ram.jpeg'
-ssd_file = 'ssd.jpeg'
-video_card_file = 'video_card.jpeg'
+computer_case_file = 'computer_case.jpg'
+cooler_file = 'cooler.jpg'
+hdd_file = 'hdd.jpg'
+mother_board_file = 'mother_board.jpg'
+power_supply_file = 'power_supply.jpg'
+processor_file = 'processor.jpg'
+ram_file = 'ram.jpg'
+ssd_file = 'ssd.jpg'
+video_card_file = 'video_card.jpg'
 
 all_categories = [
     (computer_case, computer_case_file),

@@ -48,3 +48,12 @@ def ajax_get_categories_with_id_elements_specifications(request):
 
 class IndexView(TemplateView):
     template_name = 'base.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        all_categories = cache.get('all_categories')
+        if not all_categories:
+            all_categories = CategoryProduct.objects.all()
+            cache.set('all_categories', all_categories, 60)
+        context['all_categories'] = all_categories
+        return context
