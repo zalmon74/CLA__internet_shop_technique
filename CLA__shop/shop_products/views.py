@@ -51,9 +51,16 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Добавление категорий
         all_categories = cache.get('all_categories')
         if not all_categories:
             all_categories = CategoryProduct.objects.all()
             cache.set('all_categories', all_categories, 60)
         context['all_categories'] = all_categories
+        # Добавление брендов
+        all_brands = cache.get('all_brands')
+        if not all_brands:
+            all_brands = BrandProduct.objects.all()
+            cache.set('all_brands', all_brands, 60)
+        context['all_brands'] = all_brands
         return context
