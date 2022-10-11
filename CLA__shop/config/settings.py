@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'captcha',
     'debug_toolbar',  # FIXME: Debug
     'admin_numeric_filter',
+    'phonenumber_field',
     # My
     'accounts.apps.AccountsConfig',
     'shop_products.apps.ShopProductsConfig',

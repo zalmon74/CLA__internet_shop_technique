@@ -1,6 +1,7 @@
 from .categories import CategoryProduct
 from .brands import BrandProduct
 from .products import Product, PhotoProduct
+from .contact_form import ContactFormModel
 
 from .specifications.computer_case_specifications import *
 from .specifications.cooler_specifications import *

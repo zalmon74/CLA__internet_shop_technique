@@ -575,3 +575,11 @@ class ProductAdmin(NumericFilterModelAdmin):
         CoolingSystemVideoCartSpecificationsInline,
         DimensionsAndWightVideoCartSpecificationsInline,
     ]
+
+
+@admin.register(ContactFormModel)
+class ContactUsAdmin(admin.ModelAdmin):
+
+    list_display = ('id', 'name', 'email', 'phone_number', 'datetime_created')
+    list_display_links = ('name', 'email', 'phone_number', )
+    readonly_fields = ('id', 'name', 'email', 'phone_number', 'message', 'datetime_created')

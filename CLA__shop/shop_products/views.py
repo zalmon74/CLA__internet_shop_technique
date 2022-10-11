@@ -1,11 +1,13 @@
 from django.core.cache import cache
 
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, FormView
 
 from django.http import JsonResponse
 
-from shop_products.models import BrandProduct
+from django.shortcuts import redirect
 
+from shop_products.models import BrandProduct, ContactFormModel
+from shop_products.forms import ContactUsForm
 from .business_logic import *
 
 
@@ -70,3 +72,21 @@ class AboutView(TemplateView):
     template_name = 'shop_products/about.html'
 
 
+class ContactUsView(FormView):
+    form_class = ContactUsForm
+    template_name = 'shop_products/contact.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Связаться с нами'
+        context['text_button'] = 'Отправить'
+        return context
+
+    def form_valid(self, form):
+        contact_model = ContactFormModel()
+        contact_model.name = form.cleaned_data['name']
+        contact_model.email = form.cleaned_data['email']
+        contact_model.phone_number = form.cleaned_data['phone_number']
+        contact_model.message = form.cleaned_data['message']
+        contact_model.save()
+        return redirect('home')

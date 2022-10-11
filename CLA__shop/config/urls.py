@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from shop_products.views import IndexView, AboutView
+from shop_products.views import IndexView, AboutView, ContactUsView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +26,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('products/', include('shop_products.urls')),
     path('about/', AboutView.as_view(), name='about'),
+    path('contactus', ContactUsView.as_view(), name='contactus'),
     path('', IndexView.as_view(), name='home'),
 ]
 
