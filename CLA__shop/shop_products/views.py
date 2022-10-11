@@ -64,3 +64,9 @@ class IndexView(TemplateView):
             cache.set('all_brands', all_brands, 60)
         context['all_brands'] = all_brands
         return context
+
+
+class AboutView(TemplateView):
+    template_name = 'shop_products/about.html'
+
+

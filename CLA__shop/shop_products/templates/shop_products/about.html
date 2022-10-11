@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+  <!-- about section -->
+  <div class="about">
+     <div class="container">
+        <div class="row d_flex">
+           <div class="col-md-5">
+              <div class="titlepage">
+                 <h2>О нас</h2>
+                 <p style="font-size: 20px; text-align: justify">Магазин комплектующих товаров для компьютера. Данный сайт был выполнен в целях обучения и имитирует работу реального сайта.</p>
+                 <p style="font-size: 20px; text-align: justify">Магазин работает удаленно. Реального адреса не существует. Связаться можно через соответствующую форму. Или написать на <br> email: zalmon74@yandex.ru</p>
+              </div>
+           </div>
+           <div class="col-md-7">
+              <div class="about_img">
+                 <figure><img src="{% static 'images/about.jpg' %}" alt="#"/></figure>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
+  </div>
+  <!-- end about section -->
+
+{% endblock content %}
+
