@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <style>
+        .row {
+            margin: 15px 0;
+        }
+        .product_box{
+            display: flex;
+            border: 1px solid #4843a3;
+            border-radius: 10px;
+        }
+        .product_box figure img{
+            width: 150px;
+            height: 150px;
+        }
+        .product_text{
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: 5px;
+        }
+        .product_description{
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            width: 85%;
+        }
+        .product_description p {
+            color: #666666;
+            text-align: justify;
+        }
+
+        .price_category {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+        }
+        .price_category .price{
+            color: #7a75b9;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .price_category .category{
+            color: #4843a3;
+            font-size: 15px;
+            font-style: italic;
+        }
+        .buttons .btn-info{
+            border-radius: 10px;
+        }
+        .buttons .btn-info span{
+            margin: 7px;
+        }
+    </style>
+
+      <!-- products -->
+      <div  class="products">
+         <div class="container">
+
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="titlepage">
+                     <h2>Товары</h2>
+                  </div>
+               </div>
+            </div>
+
+             {% for product in all_products %}
+                 {% if product.show %}
+
+                    <div class="row">
+                       <div class="col-md-12">
+                           <div class="product_box">
+                              <figure><img src="{{ product.photoproduct_set.first.photo.url }}" alt="#"/></figure>
+                               <div class="product_text">
+                                   <a href="">
+                                       <div class="product_description">
+                                          <h3 class="card-title">{{ product.name }}</h3>
+                                          <p>{{ product.description| truncatewords:"50" }}</p>
+                                           <div class="buttons">
+                                               <a href="" class="btn-info"><span>Добавить в избранное</span></a>
+                                               <a href="" class="btn-info"><span>Купить</span></a>
+                                           </div>
+                                       </div>
+                                   </a>
+                                   <div class="price_category">
+                                      <p class="price">{{ product.price }} р.</p>
+                                      <p class="category">{{ product.category }}</p>
+                                  </div>
+                              </div>
+                          </div>
+                       </div>
+                    </div>
+
+                 {% endif %}
+             {% endfor %}
+
+
+         </div>
+      </div>
+      <!-- end products -->
+
+{% endblock %}

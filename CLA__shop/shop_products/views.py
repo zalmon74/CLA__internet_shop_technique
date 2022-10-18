@@ -1,12 +1,12 @@
 from django.core.cache import cache
 
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView
 
 from django.http import JsonResponse
 
 from django.shortcuts import redirect
 
-from shop_products.models import BrandProduct, ContactFormModel
+from shop_products.models import BrandProduct, ContactFormModel, Product
 from shop_products.forms import ContactUsForm
 from .business_logic import *
 
@@ -90,3 +90,9 @@ class ContactUsView(FormView):
         contact_model.message = form.cleaned_data['message']
         contact_model.save()
         return redirect('home')
+
+
+class ProductsListView(ListView):
+    model = Product
+    template_name = 'shop_products/product.html'
+    context_object_name = 'all_products'
