@@ -55,6 +55,16 @@
         .buttons .btn-info span{
             margin: 7px;
         }
+        .pagination {
+            justify-content: center;
+        }
+        .step-links {
+            display: flex;
+            font-size: 25px;
+        }
+        .page-link.selected{
+            color: #666666;
+        }
     </style>
 
       <!-- products -->
@@ -99,6 +109,39 @@
                  {% endif %}
              {% endfor %}
 
+         <div class="pagination">
+            <span class="step-links">
+
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}"><li class="page-link">&lt</li></a>
+                    {% if 1 < page_obj.number|add:-5 %}
+                        <a href="?page=1"><li class="page-link">1</li></a>
+                        {% if 1 != page_obj.number|add:-6 %}
+                            <li class="page-link">...</li>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+
+                {% for num_page in paginator.page_range %}
+                    {% if page_obj.number == num_page %}
+                        <li class="page-link selected">{{ num_page }}</li>
+                    {% elif num_page >= page_obj.number|add:-5 and num_page <= page_obj.number|add:5 %}
+                        <a href="?page={{ num_page }}"><li class="page-link">{{ num_page }}</li></a>
+                    {% endif %}
+
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    {% if paginator.num_pages > page_obj.number|add:6 %}
+                        <li class="page-link">...</li>
+                    {% endif %}
+                    {% if paginator.num_pages > page_obj.number|add:5 %}
+                        <a href="?page={{ paginator.num_pages }}"><li class="page-link">{{ paginator.num_pages }}</li></a>
+                    {% endif %}
+                    <a href="?page={{ page_obj.next_page_number }}"><li class="page-link">&gt</li></a>
+                {% endif %}
+            </span>
+        </div>
 
          </div>
       </div>

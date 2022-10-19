@@ -96,3 +96,5 @@ class ProductsListView(ListView):
     model = Product
     template_name = 'shop_products/product.html'
     context_object_name = 'all_products'
+
+    paginate_by = 15
