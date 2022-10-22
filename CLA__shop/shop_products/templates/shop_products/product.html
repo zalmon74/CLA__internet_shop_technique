@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load show_products_tags %}
 
 {% block content %}
 
@@ -65,57 +65,107 @@
         .page-link.selected{
             color: #666666;
         }
+        .filter_form{
+            background-color: white;
+        }
+        .filter_form h3{
+            text-align: center;
+        }
+        .filter_form_inner{
+            display: flex;
+            justify-content: center;
+        }
+        .el_form{
+            display: flex;
+            margin: 10px;
+            font-size: 15px;
+        }
+        .el_form_label{
+            margin-right: 10px;
+            font-size: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .filter_form_btn{
+            display: grid;
+            justify-content: center;
+        }
+        .filter_form_btn button{
+            margin: 10px;
+        }
     </style>
 
-      <!-- products -->
-      <div  class="products">
-         <div class="container">
+    <!-- products -->
+    <div  class="products">
+        <div class="container">
 
             <div class="row">
-               <div class="col-md-12">
-                  <div class="titlepage">
-                     <h2>Товары</h2>
-                  </div>
-               </div>
+                <div class="col-md-12">
+                    <div class="titlepage">
+                        <h2>Товары</h2>
+                    </div>
+                </div>
             </div>
 
-             {% for product in all_products %}
-                 {% if product.show %}
+            <div class="filter_form">
+
+                <h3 class="h3">Фильтр товаров</h3>
+
+                <form method="get">
+                    <div class="filter_form_inner">
+                        {% for el_form in form %}
+                            <div class="el_form">
+                                <div class="el_form_label">
+                                    <label for="{{ el_form.auto_id }}">{{ el_form.label }}</label>
+                                </div>
+                                {{ el_form }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="filter_form_btn">
+                        <button type="submit" class="sub_btn" style="background-color: #17a2b8;">Применить</button>
+                    </div>
+                </form>
+            </div>
+
+            {% for product in all_products %}
+                {% if product.show %}
 
                     <div class="row">
-                       <div class="col-md-12">
-                           <div class="product_box">
-                              <figure><img src="{{ product.photoproduct_set.first.photo.url }}" alt="#"/></figure>
-                               <div class="product_text">
-                                   <a href="">
-                                       <div class="product_description">
-                                          <h3 class="card-title">{{ product.name }}</h3>
-                                          <p>{{ product.description| truncatewords:"50" }}</p>
-                                           <div class="buttons">
-                                               <a href="" class="btn-info"><span>Добавить в избранное</span></a>
-                                               <a href="" class="btn-info"><span>Купить</span></a>
-                                           </div>
-                                       </div>
-                                   </a>
-                                   <div class="price_category">
-                                      <p class="price">{{ product.price }} р.</p>
-                                      <p class="category">{{ product.category }}</p>
-                                  </div>
-                              </div>
-                          </div>
-                       </div>
+                        <div class="col-md-12">
+                            <div class="product_box">
+                                <figure><img src="{{ product.photoproduct_set.first.photo.url }}" alt="#"/></figure>
+                                <div class="product_text">
+                                    <a href="">
+                                        <div class="product_description">
+                                            <h3 class="card-title">{{ product.name }}</h3>
+                                            <p>{{ product.description| truncatewords:"50" }}</p>
+                                            <div class="buttons">
+                                                <a href="" class="btn-info"><span>Добавить в избранное</span></a>
+                                                <a href="" class="btn-info"><span>Купить</span></a>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="price_category">
+                                        <p class="price">{{ product.price }} р.</p>
+                                        <p class="category">{{ product.category }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                 {% endif %}
-             {% endfor %}
+                {% endif %}
+            {% endfor %}
 
-         <div class="pagination">
+            <div class="pagination">
             <span class="step-links">
 
                 {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}"><li class="page-link">&lt</li></a>
+                    <a href="{% create_get_parameters_for_url_products page_obj.previous_page_number filter_brands filter_categories %}"><li class="page-link">&lt</li></a>
                     {% if 1 < page_obj.number|add:-5 %}
-                        <a href="?page=1"><li class="page-link">1</li></a>
+                        <a href="{% create_get_parameters_for_url_products 1 filter_brands filter_categories %}"><li class="page-link">1</li></a>
                         {% if 1 != page_obj.number|add:-6 %}
                             <li class="page-link">...</li>
                         {% endif %}
@@ -126,7 +176,7 @@
                     {% if page_obj.number == num_page %}
                         <li class="page-link selected">{{ num_page }}</li>
                     {% elif num_page >= page_obj.number|add:-5 and num_page <= page_obj.number|add:5 %}
-                        <a href="?page={{ num_page }}"><li class="page-link">{{ num_page }}</li></a>
+                        <a href="{% create_get_parameters_for_url_products num_page filter_brands filter_categories %}"><li class="page-link">{{ num_page }}</li></a>
                     {% endif %}
 
                 {% endfor %}
@@ -136,15 +186,28 @@
                         <li class="page-link">...</li>
                     {% endif %}
                     {% if paginator.num_pages > page_obj.number|add:5 %}
-                        <a href="?page={{ paginator.num_pages }}"><li class="page-link">{{ paginator.num_pages }}</li></a>
+                        <a href="{% create_get_parameters_for_url_products paginator.num_pages filter_brands filter_categories %}"><li class="page-link">{{ paginator.num_pages }}</li></a>
                     {% endif %}
-                    <a href="?page={{ page_obj.next_page_number }}"><li class="page-link">&gt</li></a>
+                    <a href="{% create_get_parameters_for_url_products page_obj.next_page_number filter_brands filter_categories %}"><li class="page-link">&gt</li></a>
                 {% endif %}
             </span>
+            </div>
         </div>
+    </div>
+    <!-- end products -->
 
-         </div>
-      </div>
-      <!-- end products -->
+    {% block my_js %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        {{ request.query_params }}
+{#        {{ request.GET|getlist:'categories' }}#}
+        <script>
+            $(document).ready(function() {
+                let url = new URL(window.location.href);  // Создаем объект с текущим URL
+                let get_params = new URLSearchParams(url.search);  //Выделяем все GET-параметры
+                $('#id_categories').val(get_params.getAll('categories')).change();
+                $('#id_brands').val(get_params.getAll('brands')).change();
+            });
+        </script>
+    {% endblock %}
 
 {% endblock %}

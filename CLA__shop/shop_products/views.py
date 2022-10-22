@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 
 from shop_products.models import BrandProduct, ContactFormModel, Product
-from shop_products.forms import ContactUsForm
+from shop_products.forms import ContactUsForm, FilterProductsForm
 from .business_logic import *
 
 
@@ -92,9 +92,29 @@ class ContactUsView(FormView):
         return redirect('home')
 
 
-class ProductsListView(ListView):
+class ProductsListView(ListView, FormView):
     model = Product
     template_name = 'shop_products/product.html'
     context_object_name = 'all_products'
 
     paginate_by = 15
+
+    form_class = FilterProductsForm
+
+    def get_queryset(self):
+        current_queryset = super().get_queryset()
+        # Определяем фильтры
+        filter_categories = self.request.GET.getlist('categories', [])
+        filter_brands = self.request.GET.getlist('brands', [])
+        # Фильтруем
+        if len(filter_categories) != 0:
+            current_queryset = current_queryset.filter(category__in=filter_categories)
+        if len(filter_brands) != 0:
+            current_queryset = current_queryset.filter(brand__in=filter_brands)
+        return current_queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter_categories'] = self.request.GET.getlist('categories', [])
+        context['filter_brands'] = self.request.GET.getlist('brands', [])
+        return context
