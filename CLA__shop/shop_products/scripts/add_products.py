@@ -1,9 +1,10 @@
 import os
-import sys
 import random
-from string import ascii_letters
-from shutil import copy
+import sys
+
 from datetime import date
+from shutil import copy
+from string import ascii_letters
 
 import django
 
@@ -15,8 +16,9 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings'
 django.setup()
 
 
-from shop_products.models import BrandProduct, CategoryProduct, Product, PhotoProduct, specifications
-
+from shop_products.models import (
+    BrandProduct, CategoryProduct, PhotoProduct, Product, specifications,
+)
 
 COUNT_PRODUCTS_FOR_ONE_CATEGORY = 15  # Количество товаров в одной категории
 # Описание ко всем товарам
@@ -29,7 +31,7 @@ CATEGORIES_AND_PHOTO_PRODUCTS = {
     'Корпус': 'computer_case',
     'Кулер': 'cooler',
     'Жесткий диск': 'hdd',
-    'Материнская палата': 'mother_board',
+    'Материнская плата': 'mother_board',
     'Блок питания': 'power_supply',
     'Процессор': 'processor',
     'Оперативная память': 'ram',
@@ -763,7 +765,7 @@ CATEGORIES_AND_FUNCTIONS_SPECIFICATIONS = {
     'Корпус': create_computer_case_specifications,
     'Кулер': create_cooler_specifications,
     'Жесткий диск': create_hdd_specifications,
-    'Материнская палата': create_motherboard_specifications,
+    'Материнская плата': create_motherboard_specifications,
     'Блок питания': create_power_supply_specifications,
     'Процессор': create_processor_specifications,
     'Оперативная память': create_ram_specifications,
@@ -778,6 +780,7 @@ for category in ALL_CATEGORIES:
     avail_brands = ALL_BRANDS.filter(categories=category)
     # Если для данной категории нет брендов, то пропускаем ее
     if len(avail_brands) == 0:
+        print(category)
         continue
     for num_product in range(COUNT_PRODUCTS_FOR_ONE_CATEGORY):
         # Создаем новый товар

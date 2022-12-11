@@ -1,5 +1,6 @@
 import os
 import sys
+
 from shutil import copy
 
 import django
@@ -13,12 +14,11 @@ django.setup()
 
 from shop_products.models import CategoryProduct
 
-
 # Все категории
 computer_case = 'Корпус'
 cooler = 'Кулер'
 hdd = 'Жесткий диск'
-mother_board = 'Материнская палата'
+mother_board = 'Материнская плата'
 power_supply = 'Блок питания'
 processor = 'Процессор'
 ram = 'Оперативная память'
