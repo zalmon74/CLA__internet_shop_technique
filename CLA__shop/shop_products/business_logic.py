@@ -1,8 +1,10 @@
 import inspect
 import types
+
 from importlib import import_module
 
 import django.db.models
+
 from django.core.cache import cache
 
 from .models import CategoryProduct
@@ -101,3 +103,100 @@ def create_dict_match_category_and_specification() -> dict:
     return output_dict
 
 
+def get_list_specifications_for_category(name_category: str):
+    """
+    Функция возвращает список с названиями моделей, которые описывают расширенные параметры
+    
+    :param name_category - название категории
+    """
+    # Словарь, который содержит списки с моделями для каждой категории
+    dict_with_spec = {
+        # Название категории: [Список моделей с расширенными моделями]
+        "Блок питания": [
+            'factorydatapowersupplyspecifications',
+            'commonparameterspowersupplyspecifications',
+            'appearancepowersupplyspecifications',
+            'cablesconnectorspowersupplyspecifications',
+            'electricalparameterspowersupplyspecifications',
+            'coolingsystempowersupplyspecifications',
+            'certificationpowersupplyspecifications',
+            'dimensionsweightpowersupplyspecifications',
+            ],
+        "Видеокарта": [
+            'factorydatavideocartspecifications',
+            'commonparametersvideocartspecifications',
+            'mainparametersvideocartspecifications',
+            'videomemoryvideocartspecifications',
+            'videoprocessorvideocartspecifications',
+            'outputimagevideocartspecifications',
+            'connectionvideocartspecifications',
+            'coolingsystemvideocartspecifications',
+            'dimensionsandwightvideocartspecifications',
+            ],
+        "Жесткий диск": [
+            'factorydatahddspecifications',
+            'commonparametershddspecifications',
+            'storagedevicehddspecifications',
+            'mechanicsreliabilityhddspecifications',
+            'dimensionshddspecifications',
+            ],
+        "Корпус": [
+            'factorydatacomputercasespecifications',
+            'commonparameterscomputercasespecifications',
+            'formfactorcomputercasespecifications',
+            'appearancecomputercasespecifications',
+            'compatibilitycomputercasespecifications',
+            'coolingcomputercasespecifications',
+            'frontpanelconnectorscomputercasespecifications',
+            'servicecomputercasespecifications',
+            ],
+        "Кулер": [
+            'factorydatacoolerspecifications',
+            'commonparameterscoolerspecifications',
+            'radiatorcoolerspecifications',
+            'fancoolerspecifications',
+            'dimensionscoolerspecifications',
+            ],
+        "Материнская плата": [
+            'factorydatamotherboardspecifications',
+            'commonparametersmotherboardspecifications',
+            'formfactordimensionsmotherboardspecifications',
+            'processorchipsetmotherboardspecifications',
+            'memorymotherboardspecifications',
+            'storagecontrollersmotherboardspecifications',
+            'expansionslotsmotherboardspecifications',
+            'backpanelmotherboardspecifications',
+            'internalconnectorsmotherboardspecifications',
+            'audiomotherboardspecifications',
+            'netmotherboardspecifications',
+            'coolingpowermotherboardspecifications',
+            ],
+        "Оперативная память": [
+            'factorydataramspecifications',
+            'commonparametersramspecifications',
+            'compositionramspecifications',
+            'performanceramspecifications',
+            'timingsramspecifications',
+            'designramspecifications',
+            ],
+        "Процессор": [
+            'factorydataprocessorspecifications',
+            'commonparametersprocessorspecifications',
+            'corearchitectureprocessorspecifications',
+            'frequencyoverclockingprocessorspecifications',
+            'ramoptionsprocessorspecifications',
+            'thermalcharacteristicsprocessorspecifications',
+            'graphicscoreprocessorspecifications',
+            'buscontrollersprocessorspecifications',
+            ],
+        "ССД": [
+            'factorydatasolidstatedrivespecifications',
+            'commonparameterssolidstatedrivespecifications',
+            'maincharacteristicssolidstatedrivespecifications',
+            'driveconfigurationsolidstatedrivespecifications',
+            'performanceindicatorssolidstatedrivespecifications',
+            'reliabilitysolidstatedrivespecifications',
+            'dimensionssolidstatedrivespecifications',
+            ],
+    }
+    return dict_with_spec[name_category]

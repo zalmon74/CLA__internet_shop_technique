@@ -124,6 +124,8 @@ media
 .idea/**/libraries
 
 .idea
+.vscode
+setup.cfg
 
 media
 static
@@ -133,3 +135,6 @@ images
 
 # Secrets
 .env
+
+scratch.txt
+

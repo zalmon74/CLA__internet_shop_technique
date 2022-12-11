@@ -137,7 +137,7 @@
                             <div class="product_box">
                                 <figure><img src="{{ product.photoproduct_set.first.photo.url }}" alt="#"/></figure>
                                 <div class="product_text">
-                                    <a href="">
+                                    <a href="{% url 'product_detail' product.pk %}">
                                         <div class="product_description">
                                             <h3 class="card-title">{{ product.name }}</h3>
                                             <p>{{ product.description| truncatewords:"50" }}</p>

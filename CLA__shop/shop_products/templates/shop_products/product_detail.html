@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load show_products_tags %}
+
+{% block content %}
+
+    <style>
+        .titlepage p{
+            margin: 5px;
+            text-align: justify;
+        }
+        .titlepage h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        .product_specifications{
+            padding: 30px;
+        }
+        .table td, .table th{
+            border-top: 0;
+            padding: 0;
+        }
+        .table h3{
+            font-size: 25px;
+        }
+        .name_specicifications{
+            width: 400px;
+            border-bottom: 1px solid #dee2e6;
+        }
+    </style>
+
+    <div class="laptop1">
+        <div class="container">
+            <div class="row">
+                <div class="titlepage" style="padding-bottom: 5px;">
+                    <h2>{{ product.name }}</h2>
+                    <p>{{ product.description }}</p>
+                </div>
+            </div>
+            <div class="three_box" style="padding-top: 15px; background-color: #f6f6f6;">
+                <div class="row">
+                    {% for photo_product in product.photoproduct_set.all %}
+                        <div class="col-md-4">
+                            <div class="box_text" style="margin: 5px">
+                                <i><img src="{{ photo_product.photo.url }}" width="200" alt="#"/></i>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% get_dict_with_specifications_parameters_for_product product as product_specif %}
+            
+            <div class="product_specifications">
+                <div class="row">
+                    <div class="titlepage" style="padding-bottom: 5px;">
+                        <h2>Рассширенные параметры для {{ product }}</h2>
+                    </div>
+                </div>
+                {% for one_specif in product_specif %}
+                    <table class="table">
+                        {% for name, data in one_specif.items %}
+                            {% if data == None %}
+                                <tr>
+                                    <th><h3>{{ name }}</h3></th>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                <th class="name_specicifications">{{ name }}</th>
+                                <th>{{ data }}</th>
+                                </tr>
+                            {% endif %} 
+                        {% endfor %}
+                    </table>
+                {% endfor %}
+            </div>
+                
+        </div>
+    </div>
+
+{% endblock content %}

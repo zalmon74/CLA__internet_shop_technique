@@ -1,13 +1,10 @@
 from django.core.cache import cache
-
-from django.views.generic import TemplateView, FormView, ListView
-
 from django.http import JsonResponse
-
 from django.shortcuts import redirect
-
-from shop_products.models import BrandProduct, ContactFormModel, Product
+from django.views.generic import DetailView, FormView, ListView, TemplateView
 from shop_products.forms import ContactUsForm, FilterProductsForm
+from shop_products.models import BrandProduct, ContactFormModel, Product
+
 from .business_logic import *
 
 
@@ -117,4 +114,15 @@ class ProductsListView(ListView, FormView):
         context = super().get_context_data(**kwargs)
         context['filter_categories'] = self.request.GET.getlist('categories', [])
         context['filter_brands'] = self.request.GET.getlist('brands', [])
+        return context
+
+
+class ProductsDetailView(DetailView):
+    model = Product
+    template_name = 'shop_products/product_detail.html'
+    context_object_name = 'product'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(context['product'].__dict__[context['product']._meta.fields[0].name])
         return context
