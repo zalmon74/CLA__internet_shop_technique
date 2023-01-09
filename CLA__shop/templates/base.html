@@ -1,4 +1,5 @@
 {% load static %}
+{% load show_products_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -234,7 +235,7 @@
             <div class="row">
                 {% for brand in all_brands %}
                     <div class="col-md-4">
-                      <a href="">
+                      <a href="{% url 'product_list' %}{% create_get_parameters_for_url_products 1 brand.id None %}">
                           <div class="box_text" style="margin: 5px 0">
                              <i><img src="{{ brand.photo.url }}" alt="#"/></i>
                              <h3>{{ brand.name }}</h3>
@@ -264,7 +265,7 @@
 
                          {% for category in all_categories %}
                             <div class="col-md-4 margin_bottom1">
-                                <a href="">
+                                <a href="{% url 'product_list' %}{% create_get_parameters_for_url_products 1 None category.id %}">
                                    <div class="product_box">
                                       <figure><img src="{{ category.photo.url }}" width="150px" alt="#"/></figure>
                                       <h3>{{ category.name }}</h3>

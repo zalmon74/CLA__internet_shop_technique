@@ -33,11 +33,15 @@ def create_get_parameters_for_url_products(page: int, brands: list, categories: 
     # Добавляем номер страницы
     output += f'page={page}'
     # Добавляем фильтрацию по бренду
-    for brand in brands:
-        output += f'&brands={brand}'
+    if brands:
+        brands = [brands] if not isinstance(brands, list) else brands
+        for brand in brands:
+            output += f'&brands={brand}'
     # Добавляем фильтрацию по категориям
-    for category in categories:
-        output += f'&categories={category}'
+    if categories:
+        categories = [categories] if not isinstance(categories, list) else categories
+        for category in categories:
+            output += f'&categories={category}'
     return output
 
 
