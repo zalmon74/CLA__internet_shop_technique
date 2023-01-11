@@ -34,6 +34,7 @@
       <!-- My style -->
       <style>
           .row {justify-content: space-around;}
+          .navbar-expand-md .navbar-nav {align-items: center;}
       </style>
    </head>
    <!-- body -->
@@ -78,6 +79,7 @@
                               <li class="nav-item d_none">
                                   {% if user.is_authenticated %}
                                     <a class="nav-link" href="{% url 'user_profile' %}">Профиль</a>
+                                    <a class="nav-link" href="">Корзина</a>
                                     <a class="nav-link" href="{% url 'logout_user' %}">Выйти</a>
                                   {% else %}
                                     <a class="nav-link" href="{% url 'login_user' %}">Войти</a>
