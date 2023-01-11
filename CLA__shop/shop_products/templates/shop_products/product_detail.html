@@ -27,6 +27,14 @@
             width: 400px;
             border-bottom: 1px solid #dee2e6;
         }
+        .buy_form_btn{
+            display: grid;
+            justify-content: right;
+        }
+        .buy_form_btn a{
+            margin: 10px;
+            color: white
+        }
     </style>
 
     <div class="laptop1">
@@ -35,6 +43,11 @@
                 <div class="titlepage" style="padding-bottom: 5px;">
                     <h2>{{ product.name }}</h2>
                     <p>{{ product.description }}</p>
+                    <div class="buy_form_btn">
+                        <div class="sub_btn" style="background-color: #17a2b8;">
+                            <a href="{% url 'add_product_in_shopping_basket'%}?product={{ product.id }}">Купить</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="three_box" style="padding-top: 15px; background-color: #f6f6f6;">

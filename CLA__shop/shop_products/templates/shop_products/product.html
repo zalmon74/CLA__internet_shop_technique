@@ -143,7 +143,7 @@
                                             <p>{{ product.description| truncatewords:"50" }}</p>
                                             <div class="buttons">
                                                 <a href="" class="btn-info"><span>Добавить в избранное</span></a>
-                                                <a href="" class="btn-info"><span>Купить</span></a>
+                                                <a href="{% url 'add_product_in_shopping_basket' %}?product={{ product.id }}" class="btn-info"><span>Купить</span></a>
                                             </div>
                                         </div>
                                     </a>

@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load show_products_tags %}
+
+{% block content %}
+
+    <style>
+        .row {
+            margin: 15px 0;
+        }
+        .product_box{
+            display: flex;
+            border: 1px solid #4843a3;
+            border-radius: 10px;
+        }
+        .product_box figure img{
+            width: 150px;
+            height: 150px;
+        }
+        .product_text{
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: 5px;
+        }
+        .product_description{
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            width: 85%;
+        }
+        .product_description p {
+            color: #666666;
+            text-align: justify;
+        }
+        .price_category {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            width: 40%;
+        }
+        .price_category .price{
+            color: #7a75b9;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .price_category .category{
+            color: #4843a3;
+            font-size: 15px;
+            font-style: italic;
+        }
+    </style>
+
+    <!-- products -->
+    <div  class="products">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="titlepage">
+                        <h2>Корзина</h2>
+                    </div>
+                </div>
+            </div>
+
+            {% for object in objects %}
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="product_box">
+                            <figure><img src="{{ object.product.photoproduct_set.first.photo.url }}" alt="#"/></figure>
+                            <div class="product_text">
+                                <a href="{% url 'product_detail' object.product.pk %}">
+                                    <div class="product_description">
+                                        <h3 class="card-title">{{ object.product.name }}</h3>
+                                        <p>{{ object.product.description| truncatewords:"50" }}</p>
+                                    </div>
+                                </a>
+                                <div class="price_category">
+                                    <p class="price">{{ object.product.price }} р.</p>
+                                    <p class="category">Кол-во: {{ object.count }}</p>
+                                    <p class="category">{{ object.product.category }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+    <!-- end products -->
+
+    {% block my_js %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        {{ request.query_params }}
+{#        {{ request.GET|getlist:'categories' }}#}
+        <script>
+            $(document).ready(function() {
+                let url = new URL(window.location.href);  // Создаем объект с текущим URL
+                let get_params = new URLSearchParams(url.search);  //Выделяем все GET-параметры
+                $('#id_categories').val(get_params.getAll('categories')).change();
+                $('#id_brands').val(get_params.getAll('brands')).change();
+            });
+        </script>
+    {% endblock %}
+
+{% endblock %}

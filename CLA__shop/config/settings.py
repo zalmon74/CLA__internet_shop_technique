@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     # My
     'accounts.apps.AccountsConfig',
     'shop_products.apps.ShopProductsConfig',
+    'shopping_basket.apps.ShoppingBasketConfig',
 ]
 
 MIDDLEWARE = [
