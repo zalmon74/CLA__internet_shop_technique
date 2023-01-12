@@ -1,13 +1,11 @@
 from django.urls import path
 from django.views.decorators.cache import never_cache
 
-from .views import ShopingBasketView, add_product_in_shopping_basket
+from .views import ShopingBasketView, ajax_add_product_in_shopping_bassket
 
 urlpatterns = [
-    path(
-        'add_product_in_shopping_basket/', 
-        never_cache(add_product_in_shopping_basket), 
-        name='add_product_in_shopping_basket'
-    ),
+    path('ajax_add_product_in_shopping_bassket/',
+         never_cache(ajax_add_product_in_shopping_bassket),
+         name='ajax_add_product_in_shopping_bassket'),
     path('', never_cache(ShopingBasketView.as_view()), name='shopping_basket'),
 ]
