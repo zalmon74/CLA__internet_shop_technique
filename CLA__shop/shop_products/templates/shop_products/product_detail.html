@@ -27,13 +27,13 @@
             width: 400px;
             border-bottom: 1px solid #dee2e6;
         }
-        .buy_form_btn{
-            display: grid;
-            justify-content: right;
+        .buttons .btn-info{
+            font-size: 20px;
+            border-radius: 10px;
+            margin: 5px;
         }
-        .buy_form_btn a{
-            margin: 10px;
-            color: white
+        .buttons .btn-info span{
+            margin: 7px;
         }
     </style>
 
@@ -43,10 +43,9 @@
                 <div class="titlepage" style="padding-bottom: 5px;">
                     <h2>{{ product.name }}</h2>
                     <p>{{ product.description }}</p>
-                    <div class="buy_form_btn">
-                        <div class="sub_btn" style="background-color: #17a2b8;">
-                            <button class="btn-info"><span style="margin: 7px;">Купить</span></button>
-                        </div>
+                    <div class="buttons">
+                        <button class="btn-info add-favorite-product"><span>Добавить в избранное</span></>
+                        <button class="btn-info buy-product"><span>Купить</span></button>
                     </div>
                 </div>
             </div>
@@ -95,10 +94,20 @@
         <script>
             $(document).ready(function() {
                 // ajax-запрос на добавление товара в корзину
-                $('button').click(function () {
-                    console.log(window.location.href)
+                $('.btn-info.buy-product').click(function () {
                     $.ajax({
                         url: "{% url 'ajax_add_product_in_shopping_bassket' %}",
+                        async: false,
+                        type: 'GET',
+                        data: {
+                            'product_url_detail': window.location.href
+                        }
+                    })
+                });
+                // ajax-запрос на добавление товара в избранное
+                $('.btn-info.add-favorite-product').click(function () {
+                    $.ajax({
+                        url: "{% url 'ajax_add_favorite_product' %}",
                         async: false,
                         type: 'GET',
                         data: {

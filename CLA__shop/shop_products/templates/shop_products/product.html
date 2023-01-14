@@ -51,6 +51,7 @@
         }
         .buttons .btn-info{
             border-radius: 10px;
+            margin: 5px;
         }
         .buttons .btn-info span{
             margin: 7px;
@@ -142,8 +143,9 @@
                                             <h3 class="card-title">{{ product.name }}</h3>
                                             <p>{{ product.description| truncatewords:"50" }}</p>
                                             <div class="buttons">
-                                                <a href="" class="btn-info"><span>Добавить в избранное</span></a>
-                                                <button class="btn-info"><span>Купить</span></button>
+                                                <a href=""></a>
+                                                <button class="btn-info add-favorite-product"><span>Добавить в избранное</span></>
+                                                <button class="btn-info buy-product"><span>Купить</span></button>
                                             </div>
                                         </div>
                                     </a>
@@ -203,7 +205,7 @@
         <script>
             $(document).ready(function() {
                 // ajax-запрос на добавление товара в корзину
-                $('button').click(function () {
+                $('.btn-info.buy-product').click(function () {
                     $.ajax({
                         url: "{% url 'ajax_add_product_in_shopping_bassket' %}",
                         async: false,
@@ -213,7 +215,17 @@
                         }
                     })
                 });
-
+                // ajax-запрос на добавление товара в избранное
+                $('.btn-info.add-favorite-product').click(function () {
+                    $.ajax({
+                        url: "{% url 'ajax_add_favorite_product' %}",
+                        async: false,
+                        type: 'GET',
+                        data: {
+                            'product_url_detail': $(this).parent().parent().children('a').attr('href'),
+                        }
+                    })
+                });
                 let url = new URL(window.location.href);  // Создаем объект с текущим URL
                 let get_params = new URLSearchParams(url.search);  //Выделяем все GET-параметры
                 $('#id_categories').val(get_params.getAll('categories')).change();

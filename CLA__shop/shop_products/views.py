@@ -1,5 +1,5 @@
 from django.core.cache import cache
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.views.generic import DetailView, FormView, ListView, TemplateView
 from shop_products.forms import ContactUsForm, FilterProductsForm
@@ -43,6 +43,15 @@ def ajax_get_categories_with_id_elements_specifications(request):
         dict_match_cat_spec = create_dict_match_category_and_specification()
         cache.set('dict_match_cat_spec', dict_match_cat_spec, 60)
     return JsonResponse({'dict_match_cat_spec': dict_match_cat_spec})
+
+
+def ajax_add_favorite_product(request):
+    """ Вьюшка, которая обрабатывает ajax-запрос на добавление товара в избранный
+    """
+    product_id = int(request.GET['product_url_detail'].split('/')[-2])
+    # Добавляем товар как избранный
+    request.user.favorite_products.add(Product.objects.get(id=product_id))
+    return HttpResponse()
 
 
 class IndexView(TemplateView):
