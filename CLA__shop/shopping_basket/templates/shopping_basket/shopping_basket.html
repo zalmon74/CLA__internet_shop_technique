@@ -49,6 +49,12 @@
             font-size: 15px;
             font-style: italic;
         }
+        .buttons .btn-info{
+            border-radius: 10px;
+        }
+        .buttons .btn-info span{
+            margin: 7px;
+        }
     </style>
 
     <!-- products -->
@@ -74,6 +80,10 @@
                                     <div class="product_description">
                                         <h3 class="card-title">{{ object.product.name }}</h3>
                                         <p>{{ object.product.description| truncatewords:"50" }}</p>
+                                        <div class="buttons">
+                                            <a href="" class="btn-info"></a>
+                                            <button class="btn-info"><span>Удалить из корзины</span></button>
+                                        </div>
                                     </div>
                                 </a>
                                 <div class="price_category">
@@ -94,14 +104,21 @@
 
     {% block my_js %}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        {{ request.query_params }}
-{#        {{ request.GET|getlist:'categories' }}#}
         <script>
             $(document).ready(function() {
-                let url = new URL(window.location.href);  // Создаем объект с текущим URL
-                let get_params = new URLSearchParams(url.search);  //Выделяем все GET-параметры
-                $('#id_categories').val(get_params.getAll('categories')).change();
-                $('#id_brands').val(get_params.getAll('brands')).change();
+                $('button').click(function () {
+                    $.ajax({
+                        url: "{% url 'ajax_delete_product_from_shopping_bassket' %}",
+                        async: false,
+                        type: 'GET',
+                        data: {
+                            'product_url_detail': $(this).parent().parent().children('a').attr('href'),
+                        },
+                        success: function (response) {
+                            location.reload();
+                        },
+                    })
+                });
             });
         </script>
     {% endblock %}
