@@ -121,6 +121,9 @@
                         type: 'GET',
                         data: {
                             'favorite_brand_name_delte': $(this).parent().parent().children('a').children('h3').text(),
+                        },
+                        success: function() {
+                            location.reload();
                         }
                     })
                 })

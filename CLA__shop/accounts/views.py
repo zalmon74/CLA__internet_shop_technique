@@ -173,7 +173,7 @@ class UserFavoriteBrands(FormView):
         if len(lst_favorite_brands) != 0:
             for brand in BrandProduct.objects.filter(id__in=lst_favorite_brands):
                 request.user.favorite_brands.add(brand)
-            return HttpResponseRedirect(redirect_to='')
+            return HttpResponseRedirect('/accounts/user_favorite_brands/')
         return result
 
     def get_context_data(self, **kwargs):
