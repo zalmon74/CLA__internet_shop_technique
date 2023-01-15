@@ -1,15 +1,16 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, ListView
 
+from .business_logic import get_queryset_brandproduct_exclude_favite_for_user
 from .forms import (
     ChangeUserPasswordForm, CustomAuthenticationForm, CustomUserCreateForm,
-    ProfileUserForm,
+    FavoriteBrandsForm, ProfileUserForm,
 )
-from .models import CustomUser
+from .models import BrandProduct
 
 
 class RegisterUser(CreateView):
@@ -148,4 +149,44 @@ def ajax_delete_product_from_favorite(request):
     product_id = int(request.GET['product_url_detail'].split('/')[-2])
     # Удаляем товар
     request.user.favorite_products.filter(id=product_id).delete()
+    return HttpResponse()
+
+
+class UserFavoriteBrands(FormView):
+    """ Показывает список избранных брендов, а также позволяет их выбирать
+    """
+    template_name = 'accounts/favorite_brands.html'
+    form_class = FavoriteBrandsForm
+
+    def get_form(self, form_class=None, *args, **kwargs):
+        form = super().get_form(form_class,  *args, **kwargs)
+        form.fields['favorite_brands'].label = 'Доступные бренды'
+        brands = get_queryset_brandproduct_exclude_favite_for_user(self.request.user)
+        self.len_brandproduct_exclude_favite_for_user = len(brands)
+        form.fields['favorite_brands'].queryset = brands
+        return form
+    
+    def get(self, request, *args, **kwargs):
+        result = super().get(request, *args, **kwargs)
+        # Добавляем бренды в избранное
+        lst_favorite_brands = request.GET.getlist('favorite_brands', [])
+        if len(lst_favorite_brands) != 0:
+            for brand in BrandProduct.objects.filter(id__in=lst_favorite_brands):
+                request.user.favorite_brands.add(brand)
+            return HttpResponseRedirect(redirect_to='')
+        return result
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['len_brandproduct_exclude_favite_for_user'] = self.len_brandproduct_exclude_favite_for_user
+        context['favorite_brands'] = self.request.user.favorite_brands.all()
+        return context
+    
+def ajax_delete_brand_from_favorite(request):
+    """ Вьюшка, которая обрабатывает ajax-запрос на удаление бренда из избранного
+    """
+    # Получаем ИД товара, который необходимо удалить
+    name_brand = request.GET['favorite_brand_name_delte']
+    # Удаляем бренд из избранного
+    request.user.favorite_brands.filter(name=name_brand).delete()
     return HttpResponse()

@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load show_products_tags %}
+
+{% block content %}
+
+    <style>
+        .row {
+            justify-content: space-around;
+            margin: 15px 0;
+        }
+        .buttons{
+            margin-top: 15px;
+        }
+        .buttons .btn-info{
+            border-radius: 10px;
+            margin: 5px;
+        }
+        .buttons .btn-info span{
+            margin: 7px;
+        }
+        .filter_form{
+            background-color: white;
+        }
+        .filter_form h3{
+            text-align: center;
+        }
+        .filter_form_inner{
+            display: flex;
+            justify-content: center;
+        }
+        .el_form{
+            display: flex;
+            margin: 10px;
+            font-size: 15px;
+        }
+        .el_form_label{
+            margin-right: 10px;
+            font-size: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .filter_form_btn{
+            display: grid;
+            justify-content: center;
+        }
+        .filter_form_btn button{
+            margin: 10px;
+        }
+    </style>
+
+    <!-- products -->
+    <div  class="products">
+        <div class="container">
+
+            {% if len_brandproduct_exclude_favite_for_user %}
+                <div class="filter_form">
+
+                    <h3 class="h3">Добавить в избранное</h3>
+
+                    <form method="get">
+                        <div class="filter_form_inner">
+                            {% for el_form in form %}
+                                <div class="el_form">
+                                    <div class="el_form_label">
+                                        <label for="{{ el_form.auto_id }}">{{ el_form.label }}</label>
+                                    </div>
+                                    {{ el_form }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="filter_form_btn">
+                            <button type="submit" class="sub_btn" style="background-color: #17a2b8;">Добавить</button>
+                        </div>
+                    </form>
+                </div>
+            {% endif %}
+
+            <!-- three_box -->
+            <div class="three_box">
+                    <div class="row">
+                    <div class="col-md-12">
+                        <div class="titlepage">
+                            <h2 style="max-width: 1000px">Бренды, добавленные в избранное</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for brand in favorite_brands %}
+                        <div class="col-md-4">
+                            <a href="{% url 'product_list' %}{% create_get_parameters_for_url_products 1 brand.id None %}">
+                                <div class="box_text" style="margin: 5px 0">
+                                    <i><img src="{{ brand.photo.url }}" alt="#"/></i>
+                                    <h3>{{ brand.name }}</h3>
+                                    <p>{{ brand.description }}</p>
+                                    <div class="buttons">
+                                        <a href="" class="btn-info"></a>
+                                        <button class="btn-info favorite-brand"><span>Удалить из избранного</span></button>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- three_box -->
+            
+        </div>
+    </div>
+    <!-- end products -->
+
+    {% block my_js %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                // ajax-запрос на удаление бренда из избранного
+                $('.btn-info.favorite-brand').click(function () {
+                    $.ajax({
+                        url: "{% url 'ajax_delete_brand_from_favorite' %}",
+                        async: false,
+                        type: 'GET',
+                        data: {
+                            'favorite_brand_name_delte': $(this).parent().parent().children('a').children('h3').text(),
+                        }
+                    })
+                })
+            });
+        </script>
+    {% endblock %}
+
+{% endblock %}

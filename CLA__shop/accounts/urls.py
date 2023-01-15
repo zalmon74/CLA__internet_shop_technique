@@ -15,4 +15,11 @@ urlpatterns = [
     path('ajax_delete_product_from_favorite/',
          never_cache(ajax_delete_product_from_favorite),
          name='ajax_delete_product_from_favorite'),
+    path('user_favorite_brands/',
+         never_cache(UserFavoriteBrands.as_view()),
+         name='user_favorite_brands'),
+    path('ajax_delete_brand_from_favorite/',
+         never_cache(ajax_delete_brand_from_favorite),
+         name='ajax_delete_brand_from_favorite'),
+    
 ]

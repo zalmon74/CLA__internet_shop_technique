@@ -1,12 +1,10 @@
 
-from django.contrib.auth.password_validation import validate_password
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-
 from django import forms
-
 from captcha.fields import CaptchaField, CaptchaTextInput
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.password_validation import validate_password
 
-from .models import CustomUser
+from .models import BrandProduct, CustomUser
 
 
 class CustomUserCreateForm(UserCreationForm):
@@ -114,3 +112,11 @@ class ChangeUserPasswordForm(forms.Form):
         return password2
 
 
+class FavoriteBrandsForm(forms.ModelForm):
+    """
+    Форма с избранными брендами
+    """
+    
+    class Meta:
+        model = CustomUser
+        fields = ['favorite_brands', ]
