@@ -1,9 +1,10 @@
 from django import forms
-
-from phonenumber_field.formfields import PhoneNumberField, RegionalPhoneNumberWidget
-
+from phonenumber_field.formfields import (
+    PhoneNumberField, RegionalPhoneNumberWidget,
+)
 from shop_products.validators import validate_category_name
-from shop_products.models import CategoryProduct, BrandProduct
+
+from .business_logic import get_all_name_brands, get_all_name_categories
 
 
 class ContactUsForm(forms.Form):
@@ -24,26 +25,6 @@ class ContactUsForm(forms.Form):
         max_length=500,
         widget=forms.Textarea(attrs={'class': 'textarea', 'placeholder': 'Сообщение'})
     )
-
-
-def get_all_name_categories():
-    """
-    Функция получения списка пар (id, имя) для выбора категории
-    :return: возвращает список с парами (id, имя) для всех доступных категорий
-    """
-
-    all_category = CategoryProduct.objects.all()
-    return [tuple([category.pk, category.name]) for category in all_category]
-
-
-def get_all_name_brands():
-    """
-    Функция получения списка пар (id, имя) для выбора бренда
-    :return: возвращает список с парами (id, имя) для всех доступных брендов
-    """
-
-    all_brands = BrandProduct.objects.all()
-    return [tuple([brand.pk, brand.name]) for brand in all_brands]
 
 
 class FilterProductsForm(forms.Form):

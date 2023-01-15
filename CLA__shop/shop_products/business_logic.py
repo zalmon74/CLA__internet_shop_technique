@@ -7,7 +7,7 @@ import django.db.models
 
 from django.core.cache import cache
 
-from .models import CategoryProduct
+from .models import BrandProduct, CategoryProduct
 
 
 def get_func_str_code_all_models_one_module(lst_models: list) -> str:
@@ -200,3 +200,23 @@ def get_list_specifications_for_category(name_category: str):
             ],
     }
     return dict_with_spec[name_category]
+
+
+def get_all_name_categories():
+    """
+    Функция получения списка пар (id, имя) для выбора категории
+    :return: возвращает список с парами (id, имя) для всех доступных категорий
+    """
+
+    all_category = CategoryProduct.objects.all()
+    return [tuple([category.pk, category.name]) for category in all_category]
+
+
+def get_all_name_brands():
+    """
+    Функция получения списка пар (id, имя) для выбора бренда
+    :return: возвращает список с парами (id, имя) для всех доступных брендов
+    """
+
+    all_brands = BrandProduct.objects.all()
+    return [tuple([brand.pk, brand.name]) for brand in all_brands]
