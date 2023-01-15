@@ -1,6 +1,5 @@
 from django import template
 
-
 register = template.Library()
 
 
@@ -12,7 +11,7 @@ def show_profile_menu():
 
     menu = [
         {'name': 'Профиль', 'url_name': 'user_profile'},
-        {'name': 'Любимые товары', 'url_name': 'user_profile'},
+        {'name': 'Любимые товары', 'url_name': 'user_favorite_products'},
         {'name': 'Любимые бренды', 'url_name': 'user_profile'},
         {'name': 'История покупок', 'url_name': 'user_profile'},
     ]

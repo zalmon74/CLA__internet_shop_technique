@@ -1,14 +1,15 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
-
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
+from django.views.generic import CreateView, FormView, ListView
 
-from django.views.generic import CreateView, FormView
-
-from django.shortcuts import render, redirect
-
+from .forms import (
+    ChangeUserPasswordForm, CustomAuthenticationForm, CustomUserCreateForm,
+    ProfileUserForm,
+)
 from .models import CustomUser
-from .forms import CustomUserCreateForm, CustomAuthenticationForm, ProfileUserForm, ChangeUserPasswordForm
 
 
 class RegisterUser(CreateView):
@@ -128,3 +129,23 @@ class UserChangePassword(FormView):
         user.save()
         login(self.request, user)
         return redirect('user_profile')
+
+
+class UserFavoriteProducts(ListView):
+    """ Показывает список избранных товаров пользователя
+    """
+    template_name = 'accounts/favorite_products.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        return self.request.user.favorite_products.all()
+
+
+def ajax_delete_product_from_favorite(request):
+    """ Вьюшка, которая обрабатывает ajax-запрос на удаление товара из избранного
+    """
+    # Получаем ИД товара, который необходимо удалить
+    product_id = int(request.GET['product_url_detail'].split('/')[-2])
+    # Удаляем товар
+    request.user.favorite_products.filter(id=product_id).delete()
+    return HttpResponse()
