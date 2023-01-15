@@ -10,7 +10,7 @@ from .forms import (
     ChangeUserPasswordForm, CustomAuthenticationForm, CustomUserCreateForm,
     FavoriteBrandsForm, ProfileUserForm,
 )
-from .models import BrandProduct
+from .models import BrandProduct, Product
 
 
 class RegisterUser(CreateView):
@@ -148,7 +148,7 @@ def ajax_delete_product_from_favorite(request):
     # Получаем ИД товара, который необходимо удалить
     product_id = int(request.GET['product_url_detail'].split('/')[-2])
     # Удаляем товар
-    request.user.favorite_products.filter(id=product_id).delete()
+    request.user.favorite_products.remove(Product.objects.get(id=product_id))
     return HttpResponse()
 
 
@@ -188,5 +188,5 @@ def ajax_delete_brand_from_favorite(request):
     # Получаем ИД товара, который необходимо удалить
     name_brand = request.GET['favorite_brand_name_delte']
     # Удаляем бренд из избранного
-    request.user.favorite_brands.filter(name=name_brand).delete()
+    request.user.favorite_brands.remove(BrandProduct.objects.get(name=name_brand))
     return HttpResponse()
