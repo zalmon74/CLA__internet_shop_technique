@@ -33,3 +33,15 @@ class ShopingBasketView(ListView):
     
     def get_queryset(self):
         return ShoppingBasketModel.objects.filter(user=self.request.user)
+
+
+def ajax_update_count_product_from_shopping_bassket(request):
+    """ Вьюшка, которая обрабатывает ajax-запрос на обновление количества товара
+        корзине
+    """
+    product_id = int(request.GET['product_url_detail'].split('/')[-2])
+    new_count = int(request.GET['new_count'])
+    obj = ShoppingBasketModel.objects.get(user=request.user.id, product=product_id)
+    obj.count = new_count
+    obj.save()
+    return HttpResponse()

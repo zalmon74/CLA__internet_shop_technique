@@ -55,6 +55,12 @@
         .buttons .btn-info span{
             margin: 7px;
         }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            /* display: none; <- Crashes Chrome on hover */
+            -webkit-appearance: none;
+            margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        }
     </style>
 
     <!-- products -->
@@ -88,7 +94,10 @@
                                 </a>
                                 <div class="price_category">
                                     <p class="price">{{ object.product.price }} р.</p>
-                                    <p class="category">Кол-во: {{ object.count }}</p>
+                                    <div class="count_products">
+                                        <label for="count_product">Кол-во: </label>
+                                        <input type="number" class="category" id="count_product" min="1" max="{{ object.product.count }}" value="{{ object.count }}" style="width: 50px; text-align: center;">
+                                    </div>
                                     <p class="category">{{ object.product.category }}</p>
                                 </div>
                             </div>
@@ -106,6 +115,25 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
             $(document).ready(function() {
+                $('input').focusout(function() {
+                    // Если пользователь ввел значение, которое превышает
+                    if (parseInt($(this).val()) > parseInt($(this).attr('max')) )
+                        $(this).val($(this).attr('max'))
+                    // Отправляем ajax-запрос на увеличение количество товара в БД 
+                    $.ajax({
+                        url: "{% url 'ajax_update_count_product_from_shopping_bassket' %}",
+                        async: false,
+                        cache: false,
+                        type: 'GET',
+                        data: {
+                            'product_url_detail': $(this).parent().parent().parent().children('a').attr('href'),
+                            'new_count': $(this).val()
+                        },
+                        success: function (response) {
+                            location.reload();
+                        },
+                    }).del
+                });
                 $('button').click(function () {
                     $.ajax({
                         url: "{% url 'ajax_delete_product_from_shopping_bassket' %}",
@@ -117,7 +145,7 @@
                         success: function (response) {
                             location.reload();
                         },
-                    })
+                    }) 
                 });
             });
         </script>
