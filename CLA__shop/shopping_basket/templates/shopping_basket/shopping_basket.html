@@ -61,6 +61,19 @@
             -webkit-appearance: none;
             margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
         }
+        .button_buy_obj {
+            padding: 15px;
+            text-align: right;
+            font-size: 50px;
+        }
+        .button_buy_obj button{
+            background-color: #17a2b8;
+            color: white;
+            border-radius: 25px;
+        }
+        .button_buy_obj button span{
+            margin: 10px
+        }
     </style>
 
     <!-- products -->
@@ -107,6 +120,10 @@
 
             {% endfor %}
 
+            <div class="button_buy_obj">
+                <button class="button_buy"><span>Купить</span></button>
+            </div>
+
         </div>
     </div>
     <!-- end products -->
@@ -134,7 +151,7 @@
                         },
                     }).del
                 });
-                $('button').click(function () {
+                $('.btn-info').click(function () {
                     $.ajax({
                         url: "{% url 'ajax_delete_product_from_shopping_bassket' %}",
                         async: false,
@@ -146,6 +163,23 @@
                             location.reload();
                         },
                     }) 
+                });
+                $('.button_buy').click(function () {
+                    $.ajax({
+                        url: "{% url 'ajax_buy_products_from_shopping_bassket' %}",
+                        async: false,
+                        type: 'GET',
+                        data: {
+                            'product_url_detail': $(this).parent().parent().children('a').attr('href'),
+                        },
+                        success: function (response) {
+                            location.reload();
+                        },
+                        error: function (response) {
+                            console.log(response)
+                            alert(response.responseText)
+                        },
+                    })
                 });
             });
         </script>

@@ -1,8 +1,8 @@
+from admin_numeric_filter.admin import (
+    NumericFilterModelAdmin, RangeNumericFilter,
+)
 from django.contrib import admin
-
 from django.utils.safestring import mark_safe
-
-from admin_numeric_filter.admin import RangeNumericFilter, NumericFilterModelAdmin
 
 from .models import *
 
@@ -583,3 +583,13 @@ class ContactUsAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'email', 'phone_number', 'datetime_created')
     list_display_links = ('name', 'email', 'phone_number', )
     readonly_fields = ('id', 'name', 'email', 'phone_number', 'message', 'datetime_created')
+
+
+@admin.register(PurchaseHistoryModel)
+class PurchaseHistoryModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'products', 'count', 'datetime_purchase')
+    list_display_links = ('user', 'products', 'count', 'datetime_purchase')
+
+    readonly_fields = ('id', 'user', 'products', 'count', 'datetime_purchase')
+    
+    list_filter = ('user', 'datetime_purchase')
