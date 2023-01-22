@@ -120,9 +120,11 @@
 
             {% endfor %}
 
-            <div class="button_buy_obj">
-                <button class="button_buy"><span>Купить</span></button>
-            </div>
+            {% if objects %}
+                <div class="button_buy_obj">
+                    <button class="button_buy"><span>Купить</span></button>
+                </div>
+            {% endif %}
 
         </div>
     </div>
