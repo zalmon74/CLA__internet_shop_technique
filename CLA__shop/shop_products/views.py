@@ -1,6 +1,6 @@
 from django.core.cache import cache
 from django.db import DatabaseError, transaction
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import redirect
 from django.views.generic import DetailView, FormView, ListView, TemplateView
 from shop_products.forms import (
@@ -160,6 +160,6 @@ class GiveReviewForProduct(DetailView, FormView):
                     comment=comment_obj,
                 )
         except DatabaseError:
-            pass
+            return HttpResponseBadRequest()
         
-        return HttpResponse()
+        return redirect('purchase_history_user')
