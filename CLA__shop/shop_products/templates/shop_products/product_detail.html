@@ -35,6 +35,46 @@
         .buttons .btn-info span{
             margin: 7px;
         }
+        .row{
+            margin: 15px;
+        }
+        .product_box{
+            display: flex;
+            border: 1px solid #4843a3;
+            border-radius: 10px;
+        }
+        .product_box figure img{
+            width: 150px;
+            height: 150px;
+        }
+        .product_text{
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: 5px;
+        }
+        .product_description{
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            width: 85%;
+        }
+        .product_description p {
+            color: #666666;
+            text-align: justify;
+        }
+        .price_category {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            margin-right: 10px;
+        }
+        .price_category .price{
+            color: #7a75b9;
+            font-size: 20px;
+            font-weight: 700;
+        }
     </style>
 
     <div class="laptop1">
@@ -85,6 +125,36 @@
                     </table>
                 {% endfor %}
             </div>
+
+            <div class="row">
+                <div class="titlepage" style="padding-bottom: 5px;">
+                    <h2>Отзывы</h2>
+                </div>
+            </div>
+
+            {% for review in reviews %}
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="product_box">
+                            <div class="product_text">
+                                <div class="product_description">
+                                    <h3 class="card-title">{{ review.user.username }}</h3>
+                                    {% if review.comment.f_delete %}
+                                        <p>Данный комментарий удален админом</p>
+                                    {% else %}
+                                        <p>{{ review.comment.content }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="price_category">
+                                <p class="price">{{ review.grade }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
                 
         </div>
     </div>
