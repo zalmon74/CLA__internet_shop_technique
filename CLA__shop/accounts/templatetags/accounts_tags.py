@@ -13,7 +13,7 @@ def show_profile_menu():
         {'name': 'Профиль', 'url_name': 'user_profile'},
         {'name': 'Любимые товары', 'url_name': 'user_favorite_products'},
         {'name': 'Любимые бренды', 'url_name': 'user_favorite_brands'},
-        {'name': 'История покупок', 'url_name': 'user_profile'},
+        {'name': 'История покупок', 'url_name': 'purchase_history_user'},
     ]
 
     return {'list_menu': menu}

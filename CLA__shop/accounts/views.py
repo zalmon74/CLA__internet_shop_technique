@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, ListView
+from shop_products.models import PurchaseHistoryModel
 
 from .business_logic import get_queryset_brandproduct_exclude_favite_for_user
 from .forms import (
@@ -190,3 +191,15 @@ def ajax_delete_brand_from_favorite(request):
     # Удаляем бренд из избранного
     request.user.favorite_brands.remove(BrandProduct.objects.get(name=name_brand))
     return HttpResponse()
+
+
+class PurchaseHistoryForUser(ListView):
+    model = PurchaseHistoryModel
+    template_name = 'accounts/purchase_history.html'
+    context_object_name = 'purchase_products'
+    
+    paginate_by = 10
+    
+    def get_queryset(self):
+        return PurchaseHistoryModel.objects.filter(user=self.request.user.id).order_by('-datetime_purchase')
+    

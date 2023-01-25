@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load show_products_tags %}
+
+{% block content %}
+
+    <style>
+        .row {
+            margin: 15px 0;
+        }
+        .product_box{
+            display: flex;
+            border: 1px solid #4843a3;
+            border-radius: 10px;
+        }
+        .product_box figure img{
+            width: 150px;
+            height: 150px;
+        }
+        .product_text{
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: 5px;
+        }
+        .product_description{
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            width: 85%;
+        }
+        .product_description p {
+            color: #666666;
+            text-align: justify;
+        }
+        .price_category {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            width: 40%;
+        }
+        .price_category .price{
+            color: #7a75b9;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .price_category .category{
+            color: #4843a3;
+            font-size: 15px;
+            font-style: italic;
+        }
+        .buttons .btn-info{
+            border-radius: 10px;
+        }
+        .buttons .btn-info span{
+            margin: 7px;
+        }
+        .pagination {
+            justify-content: center;
+        }
+        .step-links {
+            display: flex;
+            font-size: 25px;
+        }
+        .page-link.selected{
+            color: #666666;
+        }
+    </style>
+
+    <!-- products -->
+    <div  class="products">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="titlepage">
+                        <h2>Список купленных товаров</h2>
+                    </div>
+                </div>
+            </div>
+
+            {% for purchase_product in purchase_products %}
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="product_box">
+                            <figure><img src="{{ purchase_product.products.photoproduct_set.first.photo.url }}" alt="#"/></figure>
+                            <div class="product_text">
+                                <a href="{% url 'product_detail' purchase_product.products.pk %}">
+                                    <div class="product_description">
+                                        <h3 class="card-title">{{ purchase_product.products.name }}</h3>
+                                        <p>{{ purchase_product.products.description| truncatewords:"50" }}</p>
+                                    </div>
+                                </a>
+                                <div class="price_category">
+                                    <p class="category">{{ purchase_product.datetime_purchase|date:"d.m.y" }}</p>
+                                    <p class="price">{{ purchase_product.products.price }} р.</p>
+                                    <p class="price">Кол-во: {{ purchase_product.count }}</p>
+                                    <p class="category">{{ purchase_product.products.category }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+
+            <div class="pagination">
+                <span class="step-links">
+    
+                    {% if page_obj.has_previous %}
+                        <a href="{% create_get_parameters_for_url_products page_obj.previous_page_number filter_brands filter_categories %}"><li class="page-link">&lt</li></a>
+                        {% if 1 < page_obj.number|add:-5 %}
+                            <a href="{% create_get_parameters_for_url_products 1 filter_brands filter_categories %}"><li class="page-link">1</li></a>
+                            {% if 1 != page_obj.number|add:-6 %}
+                                <li class="page-link">...</li>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+
+                    {% for num_page in paginator.page_range %}
+                        {% if page_obj.number == num_page %}
+                            <li class="page-link selected">{{ num_page }}</li>
+                        {% elif num_page >= page_obj.number|add:-5 and num_page <= page_obj.number|add:5 %}
+                            <a href="{% create_get_parameters_for_url_products num_page filter_brands filter_categories %}"><li class="page-link">{{ num_page }}</li></a>
+                        {% endif %}
+
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        {% if paginator.num_pages > page_obj.number|add:6 %}
+                            <li class="page-link">...</li>
+                        {% endif %}
+                        {% if paginator.num_pages > page_obj.number|add:5 %}
+                            <a href="{% create_get_parameters_for_url_products paginator.num_pages filter_brands filter_categories %}"><li class="page-link">{{ paginator.num_pages }}</li></a>
+                        {% endif %}
+                        <a href="{% create_get_parameters_for_url_products page_obj.next_page_number filter_brands filter_categories %}"><li class="page-link">&gt</li></a>
+                    {% endif %}
+                </span>
+            </div>
+
+        </div>
+    </div>
+    <!-- end products -->
+
+{% endblock %}
