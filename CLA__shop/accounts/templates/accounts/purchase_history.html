@@ -90,6 +90,9 @@
                                     <div class="product_description">
                                         <h3 class="card-title">{{ purchase_product.products.name }}</h3>
                                         <p>{{ purchase_product.products.description| truncatewords:"50" }}</p>
+                                        <div class="buttons">
+                                            <a href="{% url 'give_review_for_product' purchase_product.products.pk %}" class="btn-info"><span>Оставить отзыв</span></a>
+                                        </div>
                                     </div>
                                 </a>
                                 <div class="price_category">

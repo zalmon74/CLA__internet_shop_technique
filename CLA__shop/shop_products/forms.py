@@ -5,6 +5,7 @@ from phonenumber_field.formfields import (
 from shop_products.validators import validate_category_name
 
 from .business_logic import get_all_name_brands, get_all_name_categories
+from .models import ReviewProductModel
 
 
 class ContactUsForm(forms.Form):
@@ -39,3 +40,17 @@ class FilterProductsForm(forms.Form):
     )
     brands = forms.CharField(label='Бренд', required=False, widget=forms.SelectMultiple(choices=get_all_name_brands()))
 
+
+class GiveReviewForProductForm(forms.ModelForm):
+    """
+    Форма для отзыва на купленный товар
+    """
+    
+    comment_text = forms.CharField(
+        label='Комментарий',
+        widget=forms.Textarea(attrs={'style': 'resize: none', }),
+    )
+    
+    class Meta:
+        model = ReviewProductModel
+        fields = ['grade', 'comment_text',]

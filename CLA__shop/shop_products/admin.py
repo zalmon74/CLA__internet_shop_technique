@@ -593,3 +593,23 @@ class PurchaseHistoryModelAdmin(admin.ModelAdmin):
     readonly_fields = ('id', 'user', 'products', 'count', 'datetime_purchase')
     
     list_filter = ('user', 'datetime_purchase')
+
+
+@admin.register(ReviewProductModel)
+class ReviewProductModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'product', 'grade', 'comment')
+    list_display_links = ('user', 'product', 'grade', 'comment')
+
+    readonly_fields = ('id', 'user', 'product', 'grade', 'comment')
+    
+    list_filter = ('user',)
+
+
+@admin.register(CommentProductReviewModel)
+class ReviewProductModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'content', 'created', 'updated')
+    list_display_links = ('content', 'created', 'updated')
+
+    readonly_fields = ('id', 'content', 'created', 'updated')
+    
+    list_filter = ('created', 'updated',)

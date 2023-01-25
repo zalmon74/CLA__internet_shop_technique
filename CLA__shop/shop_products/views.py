@@ -1,9 +1,15 @@
 from django.core.cache import cache
+from django.db import DatabaseError, transaction
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.views.generic import DetailView, FormView, ListView, TemplateView
-from shop_products.forms import ContactUsForm, FilterProductsForm
-from shop_products.models import BrandProduct, ContactFormModel, Product
+from shop_products.forms import (
+    ContactUsForm, FilterProductsForm, GiveReviewForProductForm,
+)
+from shop_products.models import (
+    BrandProduct, CommentProductReviewModel, ContactFormModel, Product,
+    ReviewProductModel,
+)
 
 from .business_logic import *
 
@@ -134,3 +140,26 @@ class ProductsDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class GiveReviewForProduct(DetailView, FormView):
+    model = Product
+    form_class = GiveReviewForProductForm
+    template_name = 'shop_products/give_review.html'
+
+    def form_valid(self, form):
+        clean_data = form.cleaned_data
+        try:
+            with transaction.atomic():
+                comment_obj = CommentProductReviewModel(content=clean_data['comment_text'])
+                comment_obj.save()
+                ReviewProductModel.objects.create(
+                    product=self.get_object(),
+                    user=self.request.user,
+                    grade=clean_data['grade'],
+                    comment=comment_obj,
+                )
+        except DatabaseError:
+            pass
+        
+        return HttpResponse()

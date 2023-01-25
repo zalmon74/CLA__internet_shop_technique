@@ -4,6 +4,9 @@ from django.views.decorators.cache import never_cache
 from .views import *
 
 urlpatterns = [
+    path('<int:pk>/give_review/',
+         GiveReviewForProduct.as_view(),
+         name='give_review_for_product'),
     path('ajax_get_categories_for_brand/', ajax_get_categories_for_current_brand, name='ajax_get_categories_for_brand'),
     path(
         'ajax_get_el_specifications/',
