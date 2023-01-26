@@ -5,8 +5,11 @@ from .views import *
 
 urlpatterns = [
     path('<int:pk>/give_review/',
-         GiveReviewForProduct.as_view(),
+         never_cache(GiveReviewForProduct.as_view()),
          name='give_review_for_product'),
+    path('<int:pk>/edit_review/',
+         never_cache(EditReviewForProduct.as_view()),
+         name='edit_review'),
     path('ajax_get_categories_for_brand/', ajax_get_categories_for_current_brand, name='ajax_get_categories_for_brand'),
     path(
         'ajax_get_el_specifications/',

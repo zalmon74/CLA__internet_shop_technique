@@ -7,7 +7,7 @@ import django.db.models
 
 from django.core.cache import cache
 
-from .models import BrandProduct, CategoryProduct
+from .models import BrandProduct, CategoryProduct, ReviewProductModel
 
 
 def get_func_str_code_all_models_one_module(lst_models: list) -> str:
@@ -220,3 +220,17 @@ def get_all_name_brands():
 
     all_brands = BrandProduct.objects.all()
     return [tuple([brand.pk, brand.name]) for brand in all_brands]
+
+
+def get_review_object(user, product):
+    """ Функция получения объекта с отзывом из БД для заданного товара от опред.
+        покупателя
+
+    Args:
+        user:  Покупатель, который оставлял отзыв
+        product: Товар, на который оставляли отзыв
+
+    Returns:
+        объект с отзывом из БД
+    """
+    return ReviewProductModel.objects.get(user=user.id, product=product.id)

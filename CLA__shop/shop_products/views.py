@@ -147,10 +147,21 @@ class GiveReviewForProduct(DetailView, FormView):
     model = Product
     form_class = GiveReviewForProductForm
     template_name = 'shop_products/give_review.html'
-
-    def form_valid(self, form):
-        clean_data = form.cleaned_data
+    
+    def get(self, request, *args, **kwargs):
+        # Определяем, оставлял ли покупалетль на данный товар отзыв
         try:
+            review = get_review_object(self.request.user, self.get_object())
+        except ReviewProductModel.DoesNotExist:
+            # Если покупатель не оставлял отзыв, то отправляем его к форме
+            return super().get(request, *args, **kwargs)
+        else:
+            # Если покупатель уже оставлял отзыв, то перенаправляем его на редактирования
+            return redirect('edit_review', pk=self.get_object().pk)
+    
+    def form_valid(self, form):
+        try:
+            clean_data = form.cleaned_data
             with transaction.atomic():
                 comment_obj = CommentProductReviewModel(content=clean_data['comment_text'])
                 comment_obj.save()
@@ -164,3 +175,37 @@ class GiveReviewForProduct(DetailView, FormView):
             return HttpResponseBadRequest()
         
         return redirect('purchase_history_user')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title_name'] = f'Оставить отзыв на товар "{self.get_object().name}"'
+        return context
+
+
+class EditReviewForProduct(DetailView, FormView):
+    model = Product
+    form_class = GiveReviewForProductForm
+    template_name = 'shop_products/give_review.html'
+    
+    def form_valid(self, form):
+        try:
+            clean_data = form.cleaned_data
+            # Изменяем содержимое комментария к отзыву
+            review_obj = get_review_object(self.request.user, self.get_object())
+            review_obj.comment.content = clean_data['comment_text']
+            review_obj.comment.save()
+        except DatabaseError:
+            return HttpResponseBadRequest()
+        return redirect('purchase_history_user')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title_name'] = f'Изменить отзыв к товару "{self.get_object().name}"'
+        # Получаем уже оставленный отзыв
+        review = get_review_object(self.request.user, self.get_object())
+        # Выставляем уже созданную оценку и не даем возможности ее менять
+        context['form'].fields['grade'].initial = review.grade
+        context['form'].fields['grade'].choices = [(review.grade, review.grade),]
+        # Добавляем в форму уже написанный комментарий
+        context['form'].fields['comment_text'].initial = review.comment.content
+        return context
