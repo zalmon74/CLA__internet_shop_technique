@@ -6,3 +6,6 @@ class ShopProductsConfig(AppConfig):
     name = 'shop_products'
 
     verbose_name = 'Товары магазина'
+
+    def ready(self):
+        import shop_products.signals
