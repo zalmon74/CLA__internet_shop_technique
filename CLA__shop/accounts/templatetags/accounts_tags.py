@@ -25,3 +25,11 @@ def show_std_form(form, title, text_button):
     Тэг, который формирует отображение стандартного меню
     """
     return {'form': form, 'title': title, 'text_button': text_button, }
+
+
+@register.inclusion_tag('accounts/show_tags/paginations.html')
+def show_pagination(page_obj, num_page, paginator):
+    """
+    Тэг, который отображает пагинацию для страницы
+    """
+    return {'page_obj': page_obj, 'num_page': num_page, 'paginator': paginator}
