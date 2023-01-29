@@ -480,8 +480,10 @@ class DimensionsAndWightVideoCartSpecificationsInline(admin.StackedInline):
 class ProductAdmin(NumericFilterModelAdmin):
 
     def get_html_photo(self, object_):
-        if object_.photoproduct_set.first:
+        if object_.photoproduct_set.first():
             return mark_safe(f'<img src="{object_.photoproduct_set.first().photo.url}" width=100>')
+        else:
+            return mark_safe(f'<img src="" width=100>')
 
     list_display = ('id', 'name', 'get_html_photo', 'price', 'count', 'brand', 'category', 'show')
     list_display_links = ('name', 'get_html_photo')
