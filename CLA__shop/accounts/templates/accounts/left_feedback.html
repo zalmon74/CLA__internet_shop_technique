@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% load accounts_tags %}
+
+{% block content %}
+
+    <style>
+        .row {
+            margin: 15px 0;
+        }
+        .product_box{
+            display: flex;
+            border: 1px solid #4843a3;
+            border-radius: 10px;
+        }
+        .product_text{
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: 5px;
+        }
+        .product_description{
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            width: 85%;
+        }
+        .product_description p {
+            color: #666666;
+            text-align: justify;
+        }
+        .price_category {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            margin-right: 10px;
+        }
+        .price_category .price{
+            color: #7a75b9;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .price_category .category{
+            color: #4843a3;
+            font-size: 15px;
+            font-style: italic;
+        }
+
+
+    </style>
+
+    <!-- products -->
+    <div  class="products">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="titlepage">
+                        <h2>Оставленные отзывы</h2>
+                    </div>
+                </div>
+            </div>
+
+            {% for review in review_products %}
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="{% url 'product_detail' review.product.pk %}">
+                            <div class="product_box">
+                                    <div class="product_text">
+                                        <div class="product_description">
+                                            <h3 class="card-title">{{ review.user.username }}</h3>
+                                            {% if review.comment.f_delete %}
+                                                <p>Данный комментарий удален админом</p>
+                                            {% else %}
+                                                <p>{{ review.comment.content }}</p>
+                                            {% endif %}
+                                            <p style="margin-top: 15px;">{{ review.comment.updated|date:'d.m.y' }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="price_category">
+                                        <p class="price">{{ review.grade }}</p>
+                                    </div>
+                                
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            {% endfor %}
+
+            {% show_pagination page_obj num_page paginator %}
+
+        </div>
+    </div>
+    <!-- end products -->
+
+{% endblock %}

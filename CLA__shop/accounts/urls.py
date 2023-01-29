@@ -24,4 +24,7 @@ urlpatterns = [
     path('purchase_history_user/',
         PurchaseHistoryForUser.as_view(),
         name='purchase_history_user'),
+    path('left_feedback/',
+         never_cache(UserLeftFeedbacks.as_view()),
+         name='left_feedback')
 ]

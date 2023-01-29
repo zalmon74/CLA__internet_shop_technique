@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, ListView
-from shop_products.models import PurchaseHistoryModel
+from shop_products.models import PurchaseHistoryModel, ReviewProductModel
 
 from .business_logic import get_queryset_brandproduct_exclude_favite_for_user
 from .forms import (
@@ -203,3 +203,13 @@ class PurchaseHistoryForUser(ListView):
     def get_queryset(self):
         return PurchaseHistoryModel.objects.filter(user=self.request.user.id).order_by('-datetime_purchase')
     
+
+class UserLeftFeedbacks(ListView):
+    model = ReviewProductModel
+    template_name = 'accounts/left_feedback.html'
+    context_object_name = 'review_products'
+    
+    paginate_by = 10
+
+    def get_queryset(self):
+        return ReviewProductModel.objects.filter(user=self.request.user.id)
