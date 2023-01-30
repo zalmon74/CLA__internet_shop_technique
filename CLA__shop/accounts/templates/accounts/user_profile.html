@@ -5,7 +5,11 @@
 
 {% block content %}
 
-    {% show_profile_menu %}
+    {% if user.is_staff %}
+        {% show_admin_profile_menu %}
+    {% else %}
+        {% show_profile_menu %}
+    {% endif %}
 
     <div class="contact" style="margin: 0px">
      <div class="container">
