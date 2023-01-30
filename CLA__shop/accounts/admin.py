@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import CustomUser
 from .forms import CustomUserCreateForm
+from .models import CustomUser
 
 
 @admin.register(CustomUser)
@@ -25,7 +25,7 @@ class AdminCustomUser(UserAdmin):
     add_fieldsets = (
         (
             'Обязательные поля', {
-                'fields': ('username', 'password1', 'password2', 'email', 'first_name', 'last_name')
+                'fields': ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'captcha')
             }
         ),
         ('Второстепенные поля', {'fields': ('is_staff', )}),
