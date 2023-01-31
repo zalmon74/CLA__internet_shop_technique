@@ -22,7 +22,7 @@ urlpatterns = [
          never_cache(ajax_delete_brand_from_favorite),
          name='ajax_delete_brand_from_favorite'),
     path('purchase_history_user/',
-        PurchaseHistoryForUser.as_view(),
+        never_cache(PurchaseHistoryForUser.as_view()),
         name='purchase_history_user'),
     path('left_feedback/',
          never_cache(UserLeftFeedbacks.as_view()),
