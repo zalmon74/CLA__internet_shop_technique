@@ -2,12 +2,13 @@ import inspect
 import types
 
 from importlib import import_module
+from random import sample
 
 import django.db.models
 
 from django.core.cache import cache
 
-from .models import BrandProduct, CategoryProduct, ReviewProductModel
+from .models import BrandProduct, CategoryProduct, Product, ReviewProductModel
 
 
 def get_func_str_code_all_models_one_module(lst_models: list) -> str:
@@ -234,3 +235,13 @@ def get_review_object(user, product):
         объект с отзывом из БД
     """
     return ReviewProductModel.objects.get(user=user.id, product=product.id)
+
+
+def get_random_products(count=5):
+    """ Методо поулчения queryset со случайными товарами 
+
+    Args:
+        count: Количество товаров, которое необходимо получить. По умолчанию 5.
+    """
+    all_products = Product.objects.all()
+    return all_products.filter(id__in=sample(range(0, len(all_products)), count))

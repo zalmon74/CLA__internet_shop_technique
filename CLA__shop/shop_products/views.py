@@ -7,8 +7,8 @@ from shop_products.forms import (
     ContactUsForm, FilterProductsForm, GiveReviewForProductForm,
 )
 from shop_products.models import (
-    BrandProduct, CommentProductReviewModel, ContactFormModel, Product,
-    ReviewProductModel,
+    BrandProduct, CommentProductReviewModel, ContactFormModel, PhotoProduct,
+    Product, ReviewProductModel,
 )
 
 from .business_logic import *
@@ -65,6 +65,17 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Добавление товаров для банера
+        products_for_banner = cache.get('products_for_banner')
+        if not products_for_banner:
+            products_for_banner = get_random_products()
+            cache.set('products_for_banner', products_for_banner, 60)
+        # Добавление фото для банера
+        photo_for_banner = cache.get('photo_for_banner')
+        if not photo_for_banner:
+            photo_for_banner = PhotoProduct.objects.filter(product__in=[obj.pk for obj in products_for_banner])
+            cache.set('photo_for_banner', photo_for_banner, 60)
+        context['products_for_banner'] = {products_for_banner[ind]:photo_for_banner[ind].photo.url for ind in range(len(products_for_banner))}
         # Добавление категорий
         all_categories = cache.get('all_categories')
         if not all_categories:

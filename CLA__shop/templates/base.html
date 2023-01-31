@@ -109,112 +109,33 @@
                <li data-target="#banner1" data-slide-to="4"></li>
             </ol>
             <div class="carousel-inner">
-               <div class="carousel-item active">
-                  <div class="container">
-                     <div class="carousel-caption">
-                        <div class="row">
-                           <div class="col-md-6">
-                              <div class="text-bg">
-                                 <span>Computer And Laptop</span>
-                                 <h1>Accessories</h1>
-                                 <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or </p>
-                                 <a href="#">Buy Now </a> <a href="contact.html">Contact </a>
-                              </div>
-                           </div>
-                           <div class="col-md-6">
-                              <div class="text_img">
-                                 <figure><img src="{% static 'images/pct.png' %}" alt="#"/></figure>
-                              </div>
-                           </div>
+                
+            {% for product_banner, photo_banner in products_for_banner.items %}
+                {% if forloop.first %}
+                    <div class="carousel-item active">
+                {% else %}
+                    <div class="carousel-item">
+                {% endif %}
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <div class="row">
+                            <div class="col-md-6">
+                                <div class="text-bg">
+                                    <span>{{ product_banner.name|truncatechars:30 }}</span>
+                                    <p>{{ product_banner.description|truncatechars:250 }}</p>
+                                    <a href="{% url 'product_detail' product_banner.pk %}">Купить</a>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text_img">
+                                    <figure><img src="{{ photo_banner }}" style="width: 670px; height: 280px;"  alt="#"></figure>
+                                </div>
+                            </div>
+                            </div>
                         </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="carousel-item">
-                  <div class="container">
-                     <div class="carousel-caption">
-                        <div class="row">
-                           <div class="col-md-6">
-                              <div class="text-bg">
-                                 <span>Computer And Laptop</span>
-                                 <h1>Accessories</h1>
-                                 <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or </p>
-                                 <a href="#">Buy Now </a> <a href="contact.html">Contact </a>
-                              </div>
-                           </div>
-                           <div class="col-md-6">
-                              <div class="text_img">
-                                 <figure><img src="{% static 'images/pct.png' %}" alt="#"/></figure>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="carousel-item">
-                  <div class="container">
-                     <div class="carousel-caption">
-                        <div class="row">
-                           <div class="col-md-6">
-                              <div class="text-bg">
-                                 <span>Computer And Laptop</span>
-                                 <h1>Accessories</h1>
-                                 <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or </p>
-                                 <a href="#">Buy Now </a> <a href="contact.html">Contact </a>
-                              </div>
-                           </div>
-                           <div class="col-md-6">
-                              <div class="text_img">
-                                 <figure><img src="{% static 'images/pct.png' %}" alt="#"/></figure>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="carousel-item">
-                  <div class="container">
-                     <div class="carousel-caption">
-                        <div class="row">
-                           <div class="col-md-6">
-                              <div class="text-bg">
-                                 <span>Computer And Laptop</span>
-                                 <h1>Accessories</h1>
-                                 <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or </p>
-                                 <a href="#">Buy Now </a> <a href="contact.html">Contact </a>
-                              </div>
-                           </div>
-                           <div class="col-md-6">
-                              <div class="text_img">
-                                 <figure><img src="{% static 'images/pct.png' %}" alt="#"/></figure>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="carousel-item">
-                  <div class="container">
-                     <div class="carousel-caption">
-                        <div class="row">
-                           <div class="col-md-6">
-                              <div class="text-bg">
-                                 <span>Computer And Laptop</span>
-                                 <h1>Accessories</h1>
-                                 <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or </p>
-                                 <a href="#">Buy Now </a> <a href="contact.html">Contact </a>
-                              </div>
-                           </div>
-                           <div class="col-md-6">
-                              <div class="text_img">
-                                 <figure><img src="{% static 'images/pct.png' %}" alt="#"/></figure>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
+                    </div>
+                </div>
+            {% endfor %}
             <a class="carousel-control-prev" href="#banner1" role="button" data-slide="prev">
             <i class="fa fa-chevron-left" aria-hidden="true"></i>
             </a>
