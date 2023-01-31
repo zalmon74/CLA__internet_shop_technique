@@ -54,6 +54,10 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def get_photos (self):
+        """ Метод получения фото для заданного товара
+        """
+        return self.photoproduct_set.all()
 
 def upload_to(instance, filename):
     return 'products/images/%s/%s' % (instance.product.name, filename)
