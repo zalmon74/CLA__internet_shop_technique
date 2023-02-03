@@ -138,8 +138,10 @@
                                                 {% if user.is_staff %}
                                                     <a href="{% url 'admin:shop_products_product_change' product.pk %}" class="btn-info"s><button class="btn-info"><span>Редактировать</span></a></button>
                                                 {% endif %}
-                                                <button class="btn-info add-favorite-product"><span>Добавить в избранное</span></>
-                                                <button class="btn-info buy-product"><span>Купить</span></button>
+                                                {% if user.is_authenticated %}
+                                                    <button class="btn-info add-favorite-product"><span>Добавить в избранное</span></>
+                                                    <button class="btn-info buy-product"><span>Купить</span></button>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </a>

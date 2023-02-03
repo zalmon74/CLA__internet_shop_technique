@@ -84,8 +84,12 @@
                     <h2>{{ product.name }}</h2>
                     <p>{{ product.description }}</p>
                     <div class="buttons">
-                        <button class="btn-info add-favorite-product"><span>Добавить в избранное</span></>
-                        <button class="btn-info buy-product"><span>Купить</span></button>
+                        {% if user.is_authenticated %}
+                            <button class="btn-info add-favorite-product"><span>Добавить в избранное</span></>
+                            <button class="btn-info buy-product"><span>Купить</span></button>
+                        {% else %}
+                            <span>Для покупки необходимо авторезироваться</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
