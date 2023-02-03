@@ -260,3 +260,16 @@ def get_product_category_photo(all_products):
     all_products = all_products.prefetch_related('photoproduct_set')
     photo_for_products = [obj.photoproduct_set.all()[0].photo.url for obj in all_products]
     return [(all_products[ind], categories_for_products[ind], photo_for_products[ind]) for ind in range(len(all_products))]
+
+
+def get_review_user_comment(all_reviews):
+    """ Функция формирует список с кортежами типа (отзыв, имя_покупателя_который_оставил_отзыв, комментарий)
+
+    Args:
+        all_products: QuerySet - с отзывами для заданного товара
+    """
+    users = all_reviews.select_related('user')
+    users_for_review = [obj.user for obj in users]
+    comments = all_reviews.select_related('comment')
+    comment_for_product = [obj.comment for obj in comments]
+    return [(all_reviews[ind], users_for_review[ind], comment_for_product[ind]) for ind in range(len(all_reviews))]

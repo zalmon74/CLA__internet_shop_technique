@@ -155,8 +155,11 @@ class ProductsDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['reviews'] = ReviewProductModel.objects.filter(product=self.get_object().id)
+        # Формируем список из кортежей (отзыв, имя_покупателя_который_оставил_отзыв, комментарий)
+        # Для всех товаров на странице (Оптимизация SQL-запроса)
+        context['reviews'] = get_review_user_comment(ReviewProductModel.objects.filter(product=self.get_object().id))
         return context
+    
 
 
 def delete_comment_in_products_detail(request, **kwargs):

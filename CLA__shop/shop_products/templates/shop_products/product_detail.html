@@ -135,18 +135,18 @@
                 </div>
             </div>
 
-            {% for review in reviews %}
+            {% for review, user_for_comment, comment in reviews %}
 
                 <div class="row">
                     <div class="col-md-12">
                         <div class="product_box">
                             <div class="product_text">
                                 <div class="product_description">
-                                    <h3 class="card-title">{{ review.user.username }}</h3>
-                                    {% if review.comment.f_delete %}
+                                    <h3 class="card-title">{{ user_for_comment.username }}</h3>
+                                    {% if comment.f_delete %}
                                         <p>Данный комментарий удален администратором</p>
                                     {% else %}
-                                        <p>{{ review.comment.content }}</p>
+                                        <p>{{ comment.content }}</p>
                                     {% endif %}
                                 </div>
                                 <div class="price_category">
@@ -154,8 +154,8 @@
                                 </div>
                             </div>
                             <div class="buttons" style="margin-top: 20px;">
-                                {% if user.is_staff and not review.comment.f_delete %}
-                                    <a href="{% url 'delete_comment_in_products_detail' product.pk review.comment.pk  %}" class="btn-info"s><span style="font-size: 14px;">Удалить комментарий</span></a>
+                                {% if user.is_staff and not comment.f_delete %}
+                                    <a href="{% url 'delete_comment_in_products_detail' product.pk comment.pk  %}" class="btn-info"s><span style="font-size: 14px;">Удалить комментарий</span></a>
                                 {% endif %}
                             </div>
                         </div>
