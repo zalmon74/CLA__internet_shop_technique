@@ -135,6 +135,9 @@
                                             <p>{{ product.description| truncatewords:"50" }}</p>
                                             <div class="buttons">
                                                 <a href=""></a>
+                                                {% if user.is_staff %}
+                                                    <a href="{% url 'admin:shop_products_product_change' product.pk %}" class="btn-info"s><button class="btn-info"><span>Редактировать</span></a></button>
+                                                {% endif %}
                                                 <button class="btn-info add-favorite-product"><span>Добавить в избранное</span></>
                                                 <button class="btn-info buy-product"><span>Купить</span></button>
                                             </div>
