@@ -27,9 +27,9 @@ def show_admin_profile_menu():
     """
 
     menu = [
-        {'name': 'Профиль', 'url_name': 'user_profile'},
         {'name': 'Добавить товар', 'url_name': 'admin:shop_products_product_add'},
         {'name': 'Добавить бренд', 'url_name': 'admin:shop_products_brandproduct_add'},
+        {'name': 'Изменить бренд', 'url_name': 'admin:shop_products_brandproduct_changelist'},
         {'name': 'Любимые товары', 'url_name': 'user_favorite_products'},
         {'name': 'Любимые бренды', 'url_name': 'user_favorite_brands'},
         {'name': 'История покупок', 'url_name': 'purchase_history_user'},
