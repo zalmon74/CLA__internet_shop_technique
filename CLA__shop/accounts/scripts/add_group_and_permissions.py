@@ -44,7 +44,9 @@ def add_permissions_for_administrators_group(group):
     # Добавляем права на работу с таблицами связанные с "расширенными параметрами для товаров"
     lst_id_permissions.extend([obj.id for obj in all_permissions.filter(codename__icontains='specifications')])
     group.permissions.set(lst_id_permissions)
-    
+    # Добавляем права на работу с таблицами связанные с "комментариями покупателей"
+    lst_id_permissions.extend([obj.id for obj in all_permissions.filter(codename__icontains='comment')])
+    group.permissions.set(lst_id_permissions)
     
 if __name__ == '__main__':
     group = create_administrators_group()

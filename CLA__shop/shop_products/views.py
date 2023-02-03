@@ -2,6 +2,7 @@ from django.core.cache import cache
 from django.db import DatabaseError, transaction
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.views.generic import DetailView, FormView, ListView, TemplateView
 from shop_products.forms import (
     ContactUsForm, FilterProductsForm, GiveReviewForProductForm,
@@ -156,6 +157,13 @@ class ProductsDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['reviews'] = ReviewProductModel.objects.filter(product=self.get_object().id)
         return context
+
+
+def delete_comment_in_products_detail(request, **kwargs):
+    comment = CommentProductReviewModel.objects.get(id=kwargs['comment'])
+    comment.f_delete = True
+    comment.save()
+    return redirect('product_detail', pk=kwargs['pk'])
 
 
 class GiveReviewForProduct(DetailView, FormView):

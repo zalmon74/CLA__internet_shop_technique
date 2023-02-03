@@ -39,7 +39,6 @@
             margin: 15px;
         }
         .product_box{
-            display: flex;
             border: 1px solid #4843a3;
             border-radius: 10px;
         }
@@ -145,14 +144,19 @@
                                 <div class="product_description">
                                     <h3 class="card-title">{{ review.user.username }}</h3>
                                     {% if review.comment.f_delete %}
-                                        <p>Данный комментарий удален админом</p>
+                                        <p>Данный комментарий удален администратором</p>
                                     {% else %}
                                         <p>{{ review.comment.content }}</p>
                                     {% endif %}
                                 </div>
+                                <div class="price_category">
+                                    <p class="price">{{ review.grade }}</p>
+                                </div>
                             </div>
-                            <div class="price_category">
-                                <p class="price">{{ review.grade }}</p>
+                            <div class="buttons" style="margin-top: 20px;">
+                                {% if user.is_staff and not review.comment.f_delete %}
+                                    <a href="{% url 'delete_comment_in_products_detail' product.pk review.comment.pk  %}" class="btn-info"s><span style="font-size: 14px;">Удалить комментарий</span></a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
