@@ -197,3 +197,22 @@ def buy_products(user):
     if not message or len(message) == 0:
         message = send_email_message_after_purchase(message_email, user)
     return message
+
+
+def get_product_category_photo_count(shop_basket):
+    """ Функция формирует список с кортежами типа (товар, категория_товара, фото_товара, кол-во_товара)
+
+    Args:
+        shop_basket: QuerySet - с объектами, которые описывают товары из корзины покупателя
+    """
+    # Получаем QuerySet с товарами
+    shop_basket = shop_basket.select_related('product')
+    lst_shop_basket_id_product = [obj.product.id for obj in shop_basket ]
+    all_products = Product.objects.filter(id__in=lst_shop_basket_id_product)
+    # Получаем список категорий для каждого товара
+    categories = all_products.select_related('category')
+    categories_for_products = [obj.category for obj in categories]
+    # Получаем список с url-фото для товара соответствующего товара
+    all_products = all_products.prefetch_related('photoproduct_set')
+    photo_for_products = [obj.photoproduct_set.all()[0].photo.url for obj in all_products]
+    return [(all_products[ind], categories_for_products[ind], photo_for_products[ind], shop_basket[ind].count) for ind in range(len(all_products))]

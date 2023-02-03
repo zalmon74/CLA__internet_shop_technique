@@ -245,3 +245,18 @@ def get_random_products(count=5):
     """
     all_products = Product.objects.all()
     return all_products.filter(id__in=sample(range(0, len(all_products)), count))
+
+
+def get_product_category_photo(all_products):
+    """ Функция формирует список с кортежами типа (товар, категория_товара, фото_товара)
+
+    Args:
+        all_products: QuerySet - с товарами, для которых необходимо сформировать кортеж
+    """
+    # Получаем список категорий для каждого товара
+    categories = all_products.select_related('category')
+    categories_for_products = [obj.category for obj in categories]
+    # Получаем список с url-фото для товара соответствующего товара
+    all_products = all_products.prefetch_related('photoproduct_set')
+    photo_for_products = [obj.photoproduct_set.all()[0].photo.url for obj in all_products]
+    return [(all_products[ind], categories_for_products[ind], photo_for_products[ind]) for ind in range(len(all_products))]

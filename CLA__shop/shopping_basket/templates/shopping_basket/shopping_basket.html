@@ -88,17 +88,17 @@
                 </div>
             </div>
 
-            {% for object in objects %}
+            {% for product, category, photo, count in objects %}
 
                 <div class="row">
                     <div class="col-md-12">
                         <div class="product_box">
-                            <figure><img src="{{ object.product.photoproduct_set.first.photo.url }}" alt="#"/></figure>
+                            <figure><img src="{{ photo }}" alt="#"/></figure>
                             <div class="product_text">
-                                <a href="{% url 'product_detail' object.product.pk %}">
+                                <a href="{% url 'product_detail' product.pk %}">
                                     <div class="product_description">
-                                        <h3 class="card-title">{{ object.product.name }}</h3>
-                                        <p>{{ object.product.description| truncatewords:"50" }}</p>
+                                        <h3 class="card-title">{{ product.name }}</h3>
+                                        <p>{{ product.description| truncatewords:"50" }}</p>
                                         <div class="buttons">
                                             <a href="" class="btn-info"></a>
                                             <button class="btn-info"><span>Удалить из корзины</span></button>
@@ -106,12 +106,12 @@
                                     </div>
                                 </a>
                                 <div class="price_category">
-                                    <p class="price">{{ object.product.price }} р.</p>
+                                    <p class="price">{{ product.price }} р.</p>
                                     <div class="count_products">
                                         <label for="count_product">Кол-во: </label>
-                                        <input type="number" class="category" id="count_product" min="1" max="{{ object.product.count }}" value="{{ object.count }}" style="width: 50px; text-align: center;">
+                                        <input type="number" class="category" id="count_product" min="1" max="{{ product.count }}" value="{{ count }}" style="width: 50px; text-align: center;">
                                     </div>
-                                    <p class="category">{{ object.product.category }}</p>
+                                    <p class="category">{{ category }}</p>
                                 </div>
                             </div>
                         </div>

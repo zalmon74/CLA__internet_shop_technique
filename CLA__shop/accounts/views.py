@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, ListView
 from shop_products.models import PurchaseHistoryModel, ReviewProductModel
 
-from .business_logic import get_queryset_brandproduct_exclude_favite_for_user
+from .business_logic import *
 from .forms import (
     ChangeUserPasswordForm, CustomAuthenticationForm, CustomUserCreateForm,
     FavoriteBrandsForm, ProfileUserForm,
@@ -141,6 +141,14 @@ class UserFavoriteProducts(ListView):
 
     def get_queryset(self):
         return self.request.user.favorite_products.all()
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Формируем список из кортежей (товар, название_категории, url_photo)
+        # Для всех товаров на странице (Оптимизация SQL-запроса)    
+        context['products'] = get_product_category_photo(context['products'])
+        
+        return context
 
 
 def ajax_delete_product_from_favorite(request):
@@ -203,6 +211,13 @@ class PurchaseHistoryForUser(ListView):
     def get_queryset(self):
         return PurchaseHistoryModel.objects.filter(user=self.request.user.id).order_by('-datetime_purchase')
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Формируем список из кортежей (товар, название_категории, url_photo, кол-во_купленного_товара, дата_покупки)
+        # Для всех товаров на странице (Оптимизация SQL-запроса)
+        context['purchase_products'] = get_product_category_photo_count_datepurchase(context['purchase_products'])        
+        return context
+    
 
 class UserLeftFeedbacks(ListView):
     model = ReviewProductModel
@@ -213,3 +228,10 @@ class UserLeftFeedbacks(ListView):
 
     def get_queryset(self):
         return ReviewProductModel.objects.filter(user=self.request.user.id)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Формируем список из кортежей (отзыв, товар, комментарий)
+        # Для всех товаров на странице (Оптимизация SQL-запроса)
+        context['review_products'] = get_review_product_comment(context['review_products'])
+        return context

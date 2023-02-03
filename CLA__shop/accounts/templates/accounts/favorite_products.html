@@ -69,12 +69,12 @@
                 </div>
             </div>
 
-            {% for product in products %}
+            {% for product, category, photo in products %}
 
                 <div class="row">
                     <div class="col-md-12">
                         <div class="product_box">
-                            <figure><img src="{{ product.photoproduct_set.first.photo.url }}" alt="#"/></figure>
+                            <figure><img src="{{ photo }}" alt="#"/></figure>
                             <div class="product_text">
                                 <a href="{% url 'product_detail' product.pk %}">
                                     <div class="product_description">
@@ -88,7 +88,7 @@
                                 </a>
                                 <div class="price_category">
                                     <p class="price">{{ product.price }} р.</p>
-                                    <p class="category">{{ product.category }}</p>
+                                    <p class="category">{{ category }}</p>
                                 </div>
                             </div>
                         </div>

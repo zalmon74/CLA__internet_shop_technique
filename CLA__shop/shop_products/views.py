@@ -140,6 +140,10 @@ class ProductsListView(ListView, FormView):
         context = super().get_context_data(**kwargs)
         context['filter_categories'] = self.request.GET.getlist('categories', [])
         context['filter_brands'] = self.request.GET.getlist('brands', [])
+        # Формируем список из кортежей (товар, название_категории, url_photo)
+        # Для всех товаров на странице (Оптимизация SQL-запроса)
+        context['all_products'] = get_product_category_photo(context['all_products'])
+        
         return context
 
 

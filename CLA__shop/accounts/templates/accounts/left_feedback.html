@@ -62,21 +62,21 @@
                 </div>
             </div>
 
-            {% for review in review_products %}
+            {% for review, product, comment in review_products %}
 
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="{% url 'product_detail' review.product.pk %}">
+                        <a href="{% url 'product_detail' product.pk %}">
                             <div class="product_box">
                                     <div class="product_text">
                                         <div class="product_description">
-                                            <h3 class="card-title">{{ review.user.username }}</h3>
-                                            {% if review.comment.f_delete %}
+                                            <h3 class="card-title">{{ product.name }}</h3>
+                                            {% if comment.f_delete %}
                                                 <p>Данный комментарий удален админом</p>
                                             {% else %}
-                                                <p>{{ review.comment.content }}</p>
+                                                <p>{{ comment.content }}</p>
                                             {% endif %}
-                                            <p style="margin-top: 15px;">{{ review.comment.updated|date:'d.m.y' }}</p>
+                                            <p style="margin-top: 15px;">{{ comment.updated|date:'d.m.y' }}</p>
                                         </div>
                                     </div>
                                     <div class="price_category">

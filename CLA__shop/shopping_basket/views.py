@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from django.http import HttpResponse, HttpResponseServerError
 from django.shortcuts import redirect
 from django.views.generic import ListView
@@ -34,6 +35,13 @@ class ShopingBasketView(ListView):
     
     def get_queryset(self):
         return ShoppingBasketModel.objects.filter(user=self.request.user)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Формируем список из кортежей (товар, название_категории, url_photo, кол-во_товара)
+        # Для всех товаров на странице (Оптимизация SQL-запроса)
+        context['objects'] = get_product_category_photo_count(context['objects'])
+        return context
 
 
 def ajax_update_count_product_from_shopping_bassket(request):
