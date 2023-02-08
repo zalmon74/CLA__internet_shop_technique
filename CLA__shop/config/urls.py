@@ -21,6 +21,7 @@ from shop_products.views import AboutView, ContactUsView, IndexView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('admin_tools_stats/', include('admin_tools_stats.urls')),
     path('captcha/', include('captcha.urls')),
     path('accounts/', include('accounts.urls')),
     path('products/', include('shop_products.urls')),
