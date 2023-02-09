@@ -43,10 +43,16 @@ def add_permissions_for_administrators_group(group):
     lst_id_permissions.extend([obj.id for obj in all_permissions.filter(codename__icontains='photoproduct')])
     # Добавляем права на работу с таблицами связанные с "расширенными параметрами для товаров"
     lst_id_permissions.extend([obj.id for obj in all_permissions.filter(codename__icontains='specifications')])
-    group.permissions.set(lst_id_permissions)
     # Добавляем права на работу с таблицами связанные с "комментариями покупателей"
     lst_id_permissions.extend([obj.id for obj in all_permissions.filter(codename__icontains='comment')])
+    # Добавляем права на просмотр графиков
+    all_view_permissions = all_permissions.filter(codename__icontains='view')
+    lst_id_permissions.extend([obj.id for obj in all_view_permissions.filter(codename__icontains='dashboard')])
+    lst_id_permissions.extend([obj.id for obj in all_view_permissions.filter(codename__icontains='_criteria')])
+    lst_id_permissions.extend([obj.id for obj in all_view_permissions.filter(codename__icontains='cachedvalue')])
+    
     group.permissions.set(lst_id_permissions)
+    
     
 if __name__ == '__main__':
     group = create_administrators_group()
