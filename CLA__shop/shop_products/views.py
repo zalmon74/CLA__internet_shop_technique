@@ -76,7 +76,11 @@ class IndexView(TemplateView):
         if not photo_for_banner:
             photo_for_banner = PhotoProduct.objects.filter(product__in=[obj.pk for obj in products_for_banner])
             cache.set('photo_for_banner', photo_for_banner, 60)
-        context['products_for_banner'] = {products_for_banner[ind]:photo_for_banner[ind].photo.url for ind in range(len(products_for_banner))}
+        dict_with_photo = {}
+        for ind in range(len(products_for_banner)):
+            photo_for_current_product = photo_for_banner.filter(product=products_for_banner[ind].pk)
+            dict_with_photo[products_for_banner[ind]] = photo_for_current_product[0].photo.url
+        context['products_for_banner'] = dict_with_photo
         # Добавление категорий
         all_categories = cache.get('all_categories')
         if not all_categories:
