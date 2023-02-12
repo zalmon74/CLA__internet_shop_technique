@@ -1,10 +1,11 @@
+from smtplib import SMTPRecipientsRefused
 
 from django import forms
 from captcha.fields import CaptchaField, CaptchaTextInput
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.password_validation import validate_password
 
-from .business_logic import check_confirm_code
+from .business_logic import check_confirm_code, send_message_at_change_email
 from .models import CustomUser
 
 
@@ -119,7 +120,6 @@ class ConfirmEmailUserForm(forms.Form):
     """
     confirm_email = forms.CharField(
         label='Код',
-        required=False,
         widget=forms.TextInput(attrs={'class': 'contactus'})
     )
     
@@ -134,6 +134,30 @@ class ConfirmEmailUserForm(forms.Form):
             self.add_error('confirm_email', 'Неверный код')
         return cleanned_data
     
+
+class ChangeEmailUserForm(forms.Form):
+    """
+    Форма для изменения email'а
+    """    
+    new_email = forms.EmailField(
+        label='Новый Email',
+        widget=forms.EmailInput(attrs={'class': 'contactus', 'placeholder': 'Новый Email'})
+    )
+    
+    def clean(self):
+        cleanned_data = super().clean()
+        clean_new_email = cleanned_data['new_email']
+        # Проверяем введенность правильного email, путем отправки на него сообщения
+        try:
+            send_message_at_change_email(clean_new_email)
+        except SMTPRecipientsRefused as e:
+            self.add_error('new_email', 'Введен не существующий Email')
+        # Проверяем других пользователей на наличие веденного email
+        users_with_email = CustomUser.objects.filter(email=clean_new_email)
+        if len(users_with_email) > 0:
+            self.add_error('new_email', 'Пользователи с таким Email\'ом уже существует')
+        return cleanned_data
+
 
 class FavoriteBrandsForm(forms.ModelForm):
     """

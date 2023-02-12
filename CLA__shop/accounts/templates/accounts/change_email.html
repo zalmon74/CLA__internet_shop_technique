@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load accounts_tags %}
+
+{% block title %}CLA | {{ title }}{% endblock title %}
+
+{% block content %}
+
+    {% show_profile_menu %}
+
+    {% show_std_form form title text_button %}
+
+{% endblock content %}

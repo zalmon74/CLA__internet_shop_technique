@@ -155,3 +155,19 @@ def check_confirm_code(user, user_code):
         user: Объект с пользователем, для которого производится проверка
     """
     return cache.get(generate_key_name_for_code_confirm_email_for_user(user)) == user_code
+
+
+def send_message_at_change_email(new_email):
+    """ Функция отправляет сообщение о смене почты (сообщение отправляется на 
+        новую почту для проверки ее существования)
+        
+    Args:
+        new_email: email, на который необходимо отправить сообщение
+    """
+    send_mail(
+            subject='Изменение почты на сайте cla_shop',
+            message=f'Поздравляю с успешным изменением почты',
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[new_email,],
+    )
+    

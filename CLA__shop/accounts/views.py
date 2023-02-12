@@ -275,3 +275,23 @@ def ajax_resend_message_for_confirm_email(request):
     """
     send_email_message_for_confirm_email(request.user)
     return JsonResponse({})
+
+
+class ChangeEmailUser(FormView):
+    form_class = ChangeEmailUserForm
+    template_name = 'accounts/change_email.html'
+    success_url = reverse_lazy('user_confirm_email')
+    
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        # Записыаем новыйы email в БД
+        self.request.user.email =  form.cleaned_data['new_email']
+        self.request.user.mail_confirmation = False
+        self.request.user.save()
+        return result
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Изменить Email'
+        context['text_button'] = 'Подтвердить'
+        return context

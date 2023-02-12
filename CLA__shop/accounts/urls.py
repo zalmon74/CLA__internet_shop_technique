@@ -10,6 +10,7 @@ urlpatterns = [
     path('profile/confirm_email/', 
          never_cache(ConfirmEmailUser.as_view()), 
          name='user_confirm_email'),
+    path('profile/change_email/', ChangeEmailUser.as_view(), name='user_change_email'),
     path('profile/change_password/', UserChangePassword.as_view(), name='user_change_password'),
     path('register/', RegisterUser.as_view(), name='register_user'),
     path('login/', LoginUser.as_view(), name='login_user'),
