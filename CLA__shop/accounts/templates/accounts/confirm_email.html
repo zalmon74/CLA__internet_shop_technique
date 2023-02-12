@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load accounts_tags %}
+
+{% block title %}CLA | {{ title }}{% endblock title %}
+
+{% block content %}
+
+<div class="contact" style="margin: 0px">
+    <div class="container">
+
+        <div class="row">
+           <div class="col-md-12">
+              <div class="titlepage">
+                 <h2 style="max-width: max-content;">{{ title }}</h2>
+              </div>
+           </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+            <form id="request" class="main_form" method="post">
+
+                {% csrf_token %}
+
+                <div class="row">
+                    {% for el_form in form.visible_fields %}
+                        <div class="col-md-12 ">
+                            {% if message %}
+                                <p style="color: rgb(159, 155, 47); font-size: 20px; margin-bottom: 5px; text-align: center;">{{ message }}</p>
+                            {% endif %}
+                            <p style="color: red; font-size: 20px; margin-bottom: 5px;">{{ el_form.errors.0 }}</p>
+                            <label for="{{ el_form.id_for_label }}" style="color: forestgreen">{{ el_form.label }}</label>
+                            {{ el_form }}
+                        </div>
+                    {% endfor %}
+                    <div class="col-md-12" style="display: flex; justify-content: center">
+                        <button id="confirm" type="submit" class="send_btn" style="font-size: 17px;">Подтвердить</button>
+                        <button id="resend_message_btn" type="button" class="send_btn" style="font-size: 17px; text-align: center;">Отправить еще раз</>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block my_js %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // ajax-запрос на добавление товара в корзину
+            $('#resend_message_btn').click(function () {
+                $.ajax({
+                    url: "{% url 'user_confirm_email_resend_message' %}",
+                    async: false,
+                    type: 'GET',
+                })
+            });
+        });
+    </script>
+
+{% endblock %}
+
+{% endblock content %}

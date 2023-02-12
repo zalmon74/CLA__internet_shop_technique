@@ -4,7 +4,8 @@ from captcha.fields import CaptchaField, CaptchaTextInput
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.password_validation import validate_password
 
-from .models import BrandProduct, CustomUser
+from .business_logic import check_confirm_code
+from .models import CustomUser
 
 
 class CustomUserCreateForm(UserCreationForm):
@@ -111,6 +112,28 @@ class ChangeUserPasswordForm(forms.Form):
             )
         return password2
 
+
+class ConfirmEmailUserForm(forms.Form):
+    """
+    Форма для подтверждения email'а
+    """
+    confirm_email = forms.CharField(
+        label='Код',
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'contactus'})
+    )
+    
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(ConfirmEmailUserForm, self).__init__(*args, **kwargs)
+    
+    def clean(self):
+        cleanned_data = super().clean()
+        # Проверяем правильность введенного кода
+        if not check_confirm_code(self.request.user, cleanned_data['confirm_email']):
+            self.add_error('confirm_email', 'Неверный код')
+        return cleanned_data
+    
 
 class FavoriteBrandsForm(forms.ModelForm):
     """

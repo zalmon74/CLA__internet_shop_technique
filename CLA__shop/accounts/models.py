@@ -1,13 +1,10 @@
-from django.core.validators import RegexValidator
-
 from django.contrib.auth.models import AbstractUser
-
+from django.core.validators import RegexValidator
 from django.db import models
+from shop_products.models import BrandProduct, Product
 
 from .managers import CustomUserManager
 from .validators import *
-
-from shop_products.models import Product, BrandProduct
 
 
 class CustomUser(AbstractUser):
@@ -26,6 +23,7 @@ class CustomUser(AbstractUser):
         }
     )
     email = models.EmailField(unique=True, db_index=True, verbose_name='Email')
+    mail_confirmation = models.BooleanField(default=False,verbose_name='Подтверждение почты')
     first_name = models.CharField(
         max_length=50,
         validators=[validation_first_last_name, ],

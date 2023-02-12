@@ -1,16 +1,13 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, ListView
 from shop_products.models import PurchaseHistoryModel, ReviewProductModel
 
 from .business_logic import *
-from .forms import (
-    ChangeUserPasswordForm, CustomAuthenticationForm, CustomUserCreateForm,
-    FavoriteBrandsForm, ProfileUserForm,
-)
+from .forms import *
 from .models import BrandProduct, Product
 
 
@@ -235,3 +232,46 @@ class UserLeftFeedbacks(ListView):
         # Для всех товаров на странице (Оптимизация SQL-запроса)
         context['review_products'] = get_review_product_comment(context['review_products'])
         return context
+
+
+class ConfirmEmailUser(FormView):
+    form_class = ConfirmEmailUserForm
+    template_name = 'accounts/confirm_email.html'
+    success_url = reverse_lazy('user_profile')
+
+    def get(self, request, *args, **kwargs):
+        result = super().get(request, *args, **kwargs)
+        # Отправляем сообщение с кодом для подтверждения почты
+        send_email_message_for_confirm_email(request.user)
+        result.context_data['message'] = create_message_on_confirm_email(request.user.email)
+        return result
+    
+    def post(self, request, *args, **kwargs):
+        result = super().post(request, *args, **kwargs)
+        return result
+    
+    def get_form_kwargs(self, *args, **kwargs):
+        form_kwargs = super().get_form_kwargs(*args, **kwargs)
+        form_kwargs['request'] = self.request
+        return form_kwargs
+    
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        # Записываем изменения в БД о подтверждении email
+        self.request.user.mail_confirmation = True
+        self.request.user.save()
+        return result
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Подтверждение почты'
+        
+        return context
+
+
+def ajax_resend_message_for_confirm_email(request):
+    """
+    Вьюшка для повторной отправки кода с подтверждением на почту
+    """
+    send_email_message_for_confirm_email(request.user)
+    return JsonResponse({})

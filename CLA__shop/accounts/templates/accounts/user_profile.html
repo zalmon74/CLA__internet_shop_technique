@@ -26,6 +26,12 @@
 
                   {% csrf_token %}
 
+                    {% if not user.mail_confirmation %}
+                        <div class="row" style="margin-bottom: 10px;">
+                            <p style="color: red; font-size: 20px">Email не подтвержден . Подтвердите email, чтобы совершать покупки</p>
+                        </div>
+                    {% endif %}
+
                  <div class="row">
                      {% for el_form in form %}
                          <div class="col-md-12 ">
@@ -35,14 +41,12 @@
                         </div>
                      {% endfor %}
                     <div class="col-md-12" style="display: flex; justify-content: center">
-                       <button type="submit" class="send_btn">{{ text_button }}</button>
-                       <a href="{% url 'user_change_password' %}" class="send_btn">Изменить пароль</a>
+                       <button type="submit" class="send_btn" style="font-size: 17px;">{{ text_button }}</button>
+                       <a href="{% url 'user_change_password' %}" class="send_btn" style="font-size: 17px; text-align: center;">Изменить пароль</a>
+                       {% if not user.mail_confirmation %}
+                            <a href="{% url 'user_confirm_email' %}" class="send_btn" style="font-size: 17px; text-align: center;">Подтвердить Email</a>
+                       {% endif %}
                     </div>
-
-                    <div class="col-md-12">
-
-                    </div>
-
                  </div>
               </form>
            </div>
