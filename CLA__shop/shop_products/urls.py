@@ -25,5 +25,5 @@ urlpatterns = [
     path('<int:pk>/', 
          never_cache(ProductsDetailView.as_view()), 
          name='product_detail'),
-    path('', ProductsListView.as_view(), name='product_list'),
+    path('', never_cache(ProductsListView.as_view()), name='product_list'),
 ]
