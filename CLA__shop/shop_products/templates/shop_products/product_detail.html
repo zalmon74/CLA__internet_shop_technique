@@ -82,6 +82,7 @@
                 <div class="titlepage" style="padding-bottom: 5px;">
                     <h2>{{ product.name }}</h2>
                     <p>{{ product.description }}</p>
+                    <span>Осталось {{ product.count }} штук</span>
                     <div class="buttons">
                         {% if user.is_authenticated %}
                             <button class="btn-info add-favorite-product"><span>Добавить в избранное</span></>
