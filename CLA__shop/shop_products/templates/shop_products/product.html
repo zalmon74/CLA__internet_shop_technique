@@ -140,7 +140,9 @@
                                                 {% endif %}
                                                 {% if user.is_authenticated %}
                                                     <button class="btn-info add-favorite-product"><span>Добавить в избранное</span></>
-                                                    <button class="btn-info buy-product"><span>Купить</span></button>
+                                                    {% if user.mail_confirmation %}
+                                                        <button class="btn-info buy-product"><span>Купить</span></button>
+                                                    {% endif %}
                                                 {% endif %}
                                             </div>
                                         </div>
