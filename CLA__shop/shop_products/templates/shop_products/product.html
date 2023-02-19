@@ -126,7 +126,11 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="product_box">
+                            {% if product.show and product.count > 0 %}
+                                <div class="product_box">
+                            {% else %}
+                                <div class="product_box" style="opacity: 0.4">
+                            {% endif %}
                                 <figure><img src="{{ photo }}" alt="#"/></figure>
                                 <div class="product_text">
                                     <a href="{% url 'product_detail' product.pk %}">
